@@ -43,6 +43,7 @@
   <scripts name="scripts">
     <script>scripts\path_get_nearest_pos.gml</script>
     <script>scripts\instance_nth_nearest.gml</script>
+    <script>scripts\arc_of_sight.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_enemy</object>

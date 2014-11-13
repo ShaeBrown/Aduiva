@@ -30,6 +30,7 @@
     <sprite>sprites\spr_wall_yy</sprite>
     <sprite>sprites\spr_commander</sprite>
     <sprite>sprites\spr_crafer</sprite>
+    <sprite>sprites\spr_crafter_glow</sprite>
     <sprite>sprites\spr_marker</sprite>
     <sprite>sprites\spr_ui_inv</sprite>
     <sprite>sprites\spr_triangle</sprite>
@@ -37,6 +38,7 @@
     <sprite>sprites\spr_menu_flip</sprite>
     <sprite>sprites\spr_menu_click</sprite>
     <sprite>sprites\spr_menu_click_flip</sprite>
+    <sprite>sprites\spr_send</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -63,8 +65,10 @@
     <object>objects\obj_furnace</object>
     <object>objects\obj_saw</object>
     <object>objects\obj_comui</object>
+    <object>objects\object19</object>
     <object>objects\obj_armyleader</object>
     <object>objects\obj_armygui</object>
+    <object>objects\obj_window</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room_1</room>

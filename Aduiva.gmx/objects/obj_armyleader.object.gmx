@@ -149,22 +149,37 @@ if path_exists(grouppath) {
             yyy = y + lengthdir_y(5, direction);
             
             if collision_circle(xxx,yyy,5,obj_armyleader,false,true) {
+                if path_exists(grouppath){
                 path_position=path_positionprevious;
                 direction+=5;
+                }
+               
             }
             
-                 else {
+            
+            else {
                 mp_potential_step(x2,y2,1,false);
-            }
+                }
 }
    
         
-/*var arc=arc_of_sight(x,y,direction,50,30,obj_enemy,obj_solid);
+var arc=arc_of_sight(x,y,direction,200,90,obj_enemy,obj_solid);
 if arc=noone {
-    attack=false
-        if !path_exists(grouppath) {
+        if !path_exists(grouppath)&amp;&amp; attack=true {
+            if !instance_place(dx,dy,obj_waypoint) {
+            instance_create(dx,dy,obj_waypoint);
+            }
             grouppath=path_add();
-            mp_grid_path(global.grid,grouppath,x,y,dx,dy,1);
+            var n, num, inst;   
+            num = instance_number(obj_armyleader);                  
+            for (n=1; n&lt;=num; n++) {
+            inst = instance_nth_nearest(dx,dy,obj_armyleader,n);
+            if (inst.attack==true) {
+            break;
+            }
+            }
+            attack=false;
+            mp_grid_path(global.grid,grouppath,inst.x,inst.y,dx,dy,1);
             pos1=1; //This holds the next point on the global path to move to...
             x1=path_get_point_x(grouppath,pos1); //This gets the x/y coords of the next point...
             y1=path_get_point_y(grouppath,pos1);
@@ -177,20 +192,31 @@ if arc=noone {
     }
     else {
     attack=true;
-    attackpath=path_add();
-    var wx,wy;
     wx=path_get_x(grouppath,1);
     wy=path_get_y(grouppath,1);
     with instance_nearest(wx,wy,obj_waypoint) {
         instance_destroy();
     }
+    if path_exists(grouppath) {
     path_delete(grouppath);
+    path_end();
+    }
     ddx=arc.x;
     ddy=arc.y;
-    mp_grid_path(global.grid,attackpath,x,y,ddx,ddy,true);
+    var xxx, yyy;
+    xxx = x + lengthdir_x(5, direction);
+    yyy = y + lengthdir_y(5, direction);
+            
+    if !collision_circle(xxx,yyy,5,obj_armyleader,false,true)&amp;&amp;!collision_circle(xxx,yyy,5,arc,false,true) {
+          mp_potential_step_object(ddx,ddy,1,obj_solid);
+    }
+    if collision_circle(xxx,yyy,5,arc,false,true) {
+        (arc).h--;
+        }
     
-}
-    
+              
+            }
+
 </string>
           </argument>
         </arguments>
@@ -219,29 +245,6 @@ y = round(y) //so player doesn't stop between pixels
 move_outside_solid(direction,speed) //moves outside object
 move_contact_solid(direction,speed) //moves to contact right beside the object
 speed=0     //stops player
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_enemy">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>other.health--;
 </string>
           </argument>
         </arguments>
@@ -339,7 +342,7 @@ dy = mouse_y;
 if !collision_point(mouse_x,mouse_y,obj_solid,1,1) {           
 if obj_mouse.inside_view=2 {                //if you click inside the commander's view
     if (selected==true) { 
-    
+    mp_grid_clear_cell(self,x,y);
                        //if the minion is selected
     
                     
@@ -441,17 +444,13 @@ if (selected==true) { //if minion is selected
             draw_ellipse(x-5,y-5,x+5,y+5,1)
         }
     }
-var xxx, yyy;
-            xxx = x + lengthdir_x(5, direction);
-            yyy = y + lengthdir_y(5, direction);
-            draw_circle(xxx,yyy,5,1);
 
 
     draw_sprite(spr_army_leader,0,x,y)  
 
 
 
-if path_exists(grouppath)  {
+/*if path_exists(grouppath)  {
     draw_set_colour(c_red);             //draw the minion's path
     draw_path(grouppath,x,y,true);
 }

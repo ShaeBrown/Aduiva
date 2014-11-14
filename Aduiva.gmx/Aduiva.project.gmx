@@ -33,6 +33,7 @@
     <sprite>sprites\spr_crafter_glow</sprite>
     <sprite>sprites\spr_marker</sprite>
     <sprite>sprites\spr_ui_inv</sprite>
+    <sprite>sprites\spr_inv_shrink</sprite>
     <sprite>sprites\spr_triangle</sprite>
     <sprite>sprites\spr_menu</sprite>
     <sprite>sprites\spr_menu_flip</sprite>
@@ -41,7 +42,9 @@
     <sprite>sprites\spr_send</sprite>
   </sprites>
   <backgrounds name="background"/>
-  <paths name="paths"/>
+  <paths name="paths">
+    <path>paths\path0</path>
+  </paths>
   <scripts name="scripts">
     <script>scripts\path_get_nearest_pos.gml</script>
     <script>scripts\instance_nth_nearest.gml</script>

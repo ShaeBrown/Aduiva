@@ -222,8 +222,12 @@ if global.gathshowinv=1 {
 if transfer=true {
     if ii&lt;array_height_2d(global.gathinv) {
         if global.gathinv[ii,1]&gt;0 {
+            if view_current==0 {
             draw_text(obj_crafterhut.x+60,obj_crafterhut.y-u,"+" + string(global.gathinv[ii,0]) + "   " + string(global.gathinv[ii,1]))
+            }
+            
             draw_sprite(spr_triangle,-1,view_xview[3]+25,view_yview[3]+25);
+            
             draw_text(view_xview[3]+50,view_yview[3]+25,"+" + string(global.gathinv[ii,0]) + "   " + string(global.gathinv[ii,1]))
         }
         else {
@@ -258,7 +262,9 @@ if global.invui=true {
         
     }
 }
-
+if global.sawui=true {
+    draw_sprite(spr_inv_shrink,0,view_xview[3],view_yview[3]);
+}
 
 
 

@@ -66,6 +66,7 @@
     <sprite>sprites\spr_gatherer_left</sprite>
     <sprite>sprites\spr_gatherer_right</sprite>
     <sprite>sprites\spr_gatherer_up</sprite>
+    <sprite>sprites\spr_fire</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths">

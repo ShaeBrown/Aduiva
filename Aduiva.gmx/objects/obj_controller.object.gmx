@@ -315,15 +315,17 @@ if global.furnaceui=true {
     for (var i=0;i&lt;9;i++) {
         for (var j=0;j&lt;4;j++) {
             if global.crafamount[#i,j]&gt;0 {
-                draw_sprite_stretched(global.crafitem[#i,j],0,view_xview[3]+indenth+i*spaceh,view_yview[3]+indentv+j*spacev,32,32)
-                draw_text_colour(view_xview[3]+indenth+dif+i*spaceh,view_yview[3]+indentv+dif-8+j*spacev,global.crafamount[#i,j],c_white,c_white,c_white,"",1); 
+                draw_sprite_stretched(global.crafitem[#i,j],0,view_xview[3]+indenth+j*spaceh,view_yview[3]+indentv+i*spacev,32,32)
+                draw_text_colour(view_xview[3]+indenth+dif+j*spaceh,view_yview[3]+indentv+dif-8+i*spacev,global.crafamount[#i,j],c_white,c_white,c_white,"",1); 
             }
         }
     }
-    
+    if global.ignite=true {
+        draw_sprite(spr_fire,-1,view_xview[3]+367,view_yview[3]+222)
+    }
     for (var i=0;i&lt;3;i++) {
         if global.furnace[#i,1]&gt;0 {
-                draw_sprite_stretched(global.furnace[#i,0],0,view_xview[3]+345+i*65,view_yview[3]+124,32,32)
+                draw_sprite(global.furnace[#i,0],0,view_xview[3]+345+i*65,view_yview[3]+124)
                 draw_text_colour(view_xview[3]+345+46+i*65,view_yview[3]+124+46,global.furnace[#i,1],c_white,c_white,c_white,"",1); 
             }
         }

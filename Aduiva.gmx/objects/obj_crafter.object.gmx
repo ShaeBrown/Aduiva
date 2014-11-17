@@ -241,10 +241,7 @@ var n;
        
         xx=global.selectx;
         yy=global.selecty;
-        }
-        else {
-        n++
-        }
+            }
         }
         if keyboard_check_pressed(ord('A')) {
         n=1;
@@ -264,9 +261,6 @@ var n;
        
         xx=global.selectx;
         yy=global.selecty;
-        }
-        else {
-        n++
         }
         }
         if keyboard_check_pressed(ord('D')) {
@@ -350,30 +344,18 @@ if keyboard_check_pressed(ord('A')) {
     if global.selection="furnace" {
       
       if keyboard_check_pressed(ord('D')) {
-            var moved;
-            moved=false;
             global.selectx+=1;
     if global.selectx&gt;2 {
         global.selectx=0;
         }
-        if moved=false {
-        if global.furnace[#global.selectx,1]=0 {
-        global.furnace[#global.selectx,0]=global.crafitem[#xx,yy]
-        global.furnace[#global.selectx,1]=global.crafamount[#xx,yy];
-        global.crafitem[#xx,yy]=0
-        global.crafamount[#xx,yy]=0
-        xx=global.selectx;
-        moved=true;
-        }
-        }
-        if moved=true {
+        
         if global.furnace[#global.selectx,1]=0 {
         global.furnace[#global.selectx,0]=global.furnace[#xx,0]
         global.furnace[#global.selectx,1]=global.furnace[#xx,1];
         global.furnace[#xx,0]=0
         global.furnace[#xx,1]=0
         xx=global.selectx;
-        }
+        
     }
         
     }
@@ -383,9 +365,15 @@ if keyboard_check_pressed(ord('A')) {
     if global.selectx&lt;0 {
         global.selectx=2;
     }
+        if global.furnace[#global.selectx,1]=0 {
+        global.furnace[#global.selectx,0]=global.furnace[#xx,0]
+        global.furnace[#global.selectx,1]=global.furnace[#xx,1];
+        global.furnace[#xx,0]=0
+        global.furnace[#xx,1]=0
+        xx=global.selectx;
     }
 }
-    
+}    
 }
 </string>
           </argument>
@@ -490,6 +478,7 @@ speed=0     //stops player
             <string>///Show inventory, drawn by controller
 global.selecty=-1;
 global.selectx=-1;
+global.furnaceui=false;
 if global.invui=false {
     global.invui=true;
     }
@@ -519,18 +508,30 @@ else {
           <argument>
             <kind>1</kind>
             <string>if global.furnaceui=true {
+    
  if global.selection="inv" {
     global.selection="furnace";
-    select=true;
-    
+    if global.crafitem[#global.selecty,global.selectx]!=0 {
+        if global.furnace[#global.selecty,1]=0 {
+            xx=global.selectx;
+            yy=global.selecty;
+            global.furnace[#global.selectx,0]=global.crafitem[#yy,xx]
+            global.furnace[#global.selectx,1]=global.crafamount[#yy,xx];
+            global.crafitem[#yy,xx]=0
+            global.crafamount[#yy,xx]=0
+            xx=global.selectx;
+            select=true;
+        }
     }
+ }
 else if global.selection="furnace" {
     global.selection="inv"
+    
     }
-
-global.selectx=0;
-global.selecty=0;
+    global.selectx=0;
+    global.selecty=0;
 }
+
 if global.invui=true {
     if select=false {
         if global.crafitem[#global.selectx,global.selecty]!=0 {
@@ -543,6 +544,7 @@ if global.invui=true {
     select=false;
     }
 }
+
 
 </string>
           </argument>

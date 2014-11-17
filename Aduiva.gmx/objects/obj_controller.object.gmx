@@ -35,14 +35,12 @@ global.num=0;  //change to an array?
 global.marker=false;                                                //show marker?
 global.grid=mp_grid_create(0,0,room_width/16,room_height/16,16,16); //create grid
 mp_grid_add_instances(global.grid,obj_solid,1); //add solids to pathfinding gid
-global.furnacedraw=false;
-global.sawdraw=false;
 global.grouppath=ds_list_create();
 global.commui=false;
 global.count=0;
 global.dx=0
 global.dy=0
-
+global.selection="inv";
 </string>
           </argument>
         </arguments>
@@ -98,31 +96,86 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Tranfer from Gatherer to Crafter
+var exists,done
+exists=false;
+done=false;
+if transfer=true {
 if (u=20) {                                               //if the text rises 20 pixels
         u=0;
         if ii&lt;array_height_2d(global.gathinv)-1 {
-            global.crafinv[ii,1]=global.gathinv[ii,1];    //transfer
-            global.gathinv[ii,1]=0;
-            alarm[0]=2; 
-            ii++;   
+        if exists=false {
+        for (var j=0;j&lt;4;j++) {
+            for (var i=0;i&lt;9;i++) {
+                
+                    if ds_grid_value_exists(global.crafitem,i,j,i,j,global.gathinv[ii,0]) {
+                        global.crafamount[#i,j]+=global.gathinv[ii,1];
+                        exists=true; 
+                    }
+                    if exists=true break;
+                }
+            if exists=true break;
+            }
         }
-        else if ii=array_height_2d(global.gathinv)-1{  
-            global.crafinv[ii,1]=global.gathinv[ii,1];    //transfer
+                if exists=false {
+                for (var j=0;j&lt;4;j++) {
+                     for (var i=0;i&lt;9;i++) {
+                        
+                            if ds_grid_value_exists(global.crafitem,i,j,i,j,0) {
+                                global.crafitem[#i,j]=global.gathinv[ii,0];
+                                global.crafamount[#i,j]+=global.gathinv[ii,1];
+                                done=true;
+                        }
+                        if done=true break;
+                    }
+                if done=true break
+                }
+            }
+        
+                    
+             //transfer
+            global.gathinv[ii,1]=0;
+            ii++;
+            alarm[0]=2;   
+        }
+        else if ii=array_height_2d(global.gathinv)-1 { 
+            if exists=false{ 
+            for (var j=0;j&lt;4;j++) {
+            for (var i=0;i&lt;9;i++) {
+                    if ds_grid_value_exists(global.crafitem,i,j,i,j,global.gathinv[ii,0]) {
+                        global.crafamount[#i,j]+=global.gathinv[ii,1] break;
+                        exists=true; 
+                    }
+                if exists=true break;
+                }
+            if exists=true break;
+            }
+        }
+                if exists=false {
+                for (var j=0;j&lt;4;j++) {
+                     for (var i=0;i&lt;9;i++) {
+                        if ds_grid_value_exists(global.crafitem,i,j,i,j,0) {
+                                global.crafitem[#i,j]=global.gathinv[ii,0];
+                                global.crafamount[#i,j]+=global.gathinv[ii,1]; 
+                                done=true;
+                        }
+                        if done=true break;
+                    }
+                if done=true break;
+                }   
+             }
             global.gathinv[ii,1]=0;                       //set to 0
             transfer=false;                               //stop transfer
             ii=0;                                         //next resource
           
         }
                                    
-}
+    }
 
 else {
     u+=1;                                       //rise the text
     alarm[0]=2
+    }
 }
-
-        
-    
 </string>
           </argument>
         </arguments>
@@ -209,9 +262,10 @@ if (view_current=2)  {
 
 if global.gathshowinv=1 {
     if (view_current==0) {
+        draw_set_halign ( fa_left )
         for (var i=0;i+1&lt;=array_height_2d(global.gathinv);i++) {
-            draw_text(view_xview[0]+10,view_yview[0]+25+i*30,global.gathinv[i,0])
-            draw_text(view_xview[0]+75,view_yview[0]+25+i*30,global.gathinv[i,1])
+            draw_sprite_stretched(global.gathinv[i,0],0,view_xview[0]+10,view_yview[0]+25+i*30,32,32)
+            draw_text(view_xview[0]+60,view_yview[0]+25+i*32,global.gathinv[i,1])
         }
         draw_set_alpha(0.1)
         draw_rectangle_colour(view_xview[0],view_yview[0],view_xview[0]+100,view_yview[0]+view_hview[0],"","","","",0);
@@ -221,20 +275,21 @@ if global.gathshowinv=1 {
 
 if transfer=true {
     if ii&lt;array_height_2d(global.gathinv) {
+        draw_set_halign ( fa_left )
         if global.gathinv[ii,1]&gt;0 {
+            
             if view_current==0 {
-            draw_text(obj_crafterhut.x+60,obj_crafterhut.y-u,"+" + string(global.gathinv[ii,0]) + "   " + string(global.gathinv[ii,1]))
+            draw_text(obj_crafterhut.x+60,obj_crafterhut.y-u,"+" + string(global.gathinv[ii,1]));
+            draw_sprite_stretched(global.gathinv[ii,0],0,obj_crafterhut.x+100,obj_crafterhut.y-u,16,16)
             }
-            
-            draw_sprite(spr_triangle,-1,view_xview[3]+25,view_yview[3]+25);
-            
-            draw_text(view_xview[3]+50,view_yview[3]+25,"+" + string(global.gathinv[ii,0]) + "   " + string(global.gathinv[ii,1]))
+            draw_sprite_stretched(global.gathinv[ii,0],0,view_xview[3]+50,view_yview[3]+25,16,16);
+            draw_text(view_xview[3]+70,view_yview[3]+25,"+" + string(global.gathinv[ii,1]))
         }
         else {
             ii+=1;
             }
         }
-    else {
+    else {     
         ii=0;
         transfer=false;
     }
@@ -244,26 +299,70 @@ if transfer=true {
 
 
 
-///Crafter inventory
-if global.invui=true {
-    draw_sprite(spr_ui_inv,0,view_xview[3],view_yview[3]);
-    var space,height,length,indent;
-    indent=144;
-    space=100;
-    length=5;
-    height=4;
-    for (var i=0;i&lt;array_height_2d(global.crafinv);i++) {
-        draw_text(view_xview[3]+144+(i mod length)*100,view_yview[3]+100+(i div height)*100,global.crafinv[i,1])
-        
+
+//Furnace
+if global.furnaceui=true {
+    draw_set_halign ( fa_right );
+    draw_sprite(spr_ui_furnace,0,view_xview[3],view_yview[3]);
+    var spaceh,spacev,height,length,indentv,indenth,dif;
+    indenth=14;
+    indentv=14;
+    spaceh=55;
+    spacev=52;
+    length=4;
+    height=9;
+    dif=36;
+    for (var i=0;i&lt;9;i++) {
+        for (var j=0;j&lt;4;j++) {
+            if global.crafamount[#i,j]&gt;0 {
+                draw_sprite_stretched(global.crafitem[#i,j],0,view_xview[3]+indenth+i*spaceh,view_yview[3]+indentv+j*spacev,32,32)
+                draw_text_colour(view_xview[3]+indenth+dif+i*spaceh,view_yview[3]+indentv+dif-8+j*spacev,global.crafamount[#i,j],c_white,c_white,c_white,"",1); 
+            }
+        }
     }
     
-     for (var i=0;i&lt;array_height_2d(global.crafinv);i++) {
-        draw_text(view_xview[3]+100+(i mod length)*100,view_yview[3]+75+(i div height)*100,global.crafinv[i,0])
+    for (var i=0;i&lt;3;i++) {
+        if global.furnace[#i,1]&gt;0 {
+                draw_sprite_stretched(global.furnace[#i,0],0,view_xview[3]+345+i*65,view_yview[3]+124,32,32)
+                draw_text_colour(view_xview[3]+345+46+i*65,view_yview[3]+124+46,global.furnace[#i,1],c_white,c_white,c_white,"",1); 
+            }
+        }
+        
+    
+    if global.selectx!=-1&amp;&amp;global.selecty!=-1 {
+        if global.selection="inv" {
+    draw_sprite(spr_select_vertical,0,view_xview[3]+indenth-2+(global.selectx*spaceh),view_yview[3]+indentv-3+(global.selecty*spacev))
+    }
+        if global.selection="furnace" {
+        draw_sprite(spr_select,0,view_xview[3]+341+(global.selectx*69),view_yview[3]+125);
+        }
         
     }
 }
-if global.sawui=true {
-    draw_sprite(spr_inv_shrink,0,view_xview[3],view_yview[3]);
+
+///Crafter inventory
+if global.invui=true {
+    draw_set_halign ( fa_right )
+    draw_sprite(spr_ui_inv,0,view_xview[3],view_yview[3]);
+    var spaceh,spacev,height,length,indentv,indenth,dif;
+    indenth=33;
+    indentv=104;
+    spaceh=66;
+    spacev=70;
+    length=9;
+    height=4;
+    dif=44;
+    for (var j=0;j&lt;4;j++) {
+        for (var i=0;i&lt;9;i++) {
+            if global.crafamount[#i,j]&gt;0 {
+                draw_sprite(global.crafitem[#i,j],0,view_xview[3]+indenth+i*spaceh,view_yview[3]+indentv+j*spacev)
+                draw_text_colour(view_xview[3]+indenth+dif+i*spaceh,view_yview[3]+indentv+dif-3+j*spacev,global.crafamount[#i,j],c_white,c_white,c_white,"",1); 
+            }
+        }
+    }
+    if global.selectx!=-1&amp;&amp;global.selecty!=-1 {
+    draw_sprite(spr_select,0,view_xview[3]+indenth-3+(global.selectx*spaceh),view_yview[3]+indentv+(global.selecty*spacev))
+    }
 }
 
 

@@ -32,13 +32,16 @@ dir=270      //set by the movement keys, starts facing down
 max_speed=3  //limits the players speed
 wood=0       //number of wood
 max_wood=50  //maximum carrying
-global.crafinv[0,0]="Wood"
-global.crafinv[0,1]=0;
-global.crafinv[1,0]="Metal"
-global.crafinv[1,1]=0;
 global.sawui=false;
 global.furnaceui=false;
 global.invui=false;
+global.selectx=-1;
+global.selecty=-1;
+global.crafitem=ds_grid_create(9,4);
+global.crafamount=ds_grid_create(9,4);
+select=false;
+xx=noone;
+yy=noone;
 </string>
           </argument>
         </arguments>
@@ -130,11 +133,259 @@ speed=max_speed}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if place_meeting(x,y,obj_saw) {
-    global.sawui=true;
+            <string>///UI controls
+
+for (var i=0;i&gt;9;i++) {
+    for (var j=0;j&gt;4;j++) {
+         if global.crafamount[#i,j]=0 {
+            global.crafitem[#i,j]=0;
+         }
+    }
 }
-else {
-    global.sawui=false;
+
+
+if global.invui=true {
+    if select=false {
+    if keyboard_check_pressed(ord('W')) {
+        if global.selecty=-1{
+            global.selecty=0
+            global.selectx=0
+        }
+    else {
+        global.selecty-=1;
+    }
+        if global.selecty&lt;0 {
+            global.selecty=3;
+        }
+    }
+    if keyboard_check_pressed(ord('S')) {
+        if global.selecty=-1{
+            global.selecty=0
+            global.selectx=0
+        }
+        else {
+            global.selecty+=1;
+        }
+        if global.selecty&gt;3 {
+            global.selecty=0;
+        }
+    }
+    if keyboard_check_pressed(ord('D')) {
+
+        if global.selecty=-1{
+            global.selecty=0
+            global.selectx=0
+        }
+        else {
+            global.selectx+=1;
+        }
+    if global.selectx&gt;8 {
+        global.selectx=0;
+        }
+    }
+if keyboard_check_pressed(ord('A')) {
+    if global.selectx=-1{
+        global.selecty=0
+        global.selectx=0
+    }
+    else {
+    global.selectx-=1;
+    }
+    if global.selectx&lt;0 {
+        global.selectx=8;
+    }
+    }
+}
+
+if select=true {
+var n;
+    if keyboard_check_pressed(ord('W')) {
+        n=1;
+        
+        if global.selecty=0 {
+            global.selecty=3;
+        }
+        else {
+            global.selecty-=n
+            }
+            
+        if global.crafitem[#global.selectx,global.selecty]=0 {
+             
+        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
+        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
+        global.crafitem[#xx,yy]=0
+        global.crafamount[#xx,yy]=0
+       
+        xx=global.selectx;
+        yy=global.selecty;
+        }
+       
+            }
+        
+        
+        if keyboard_check_pressed(ord('S')) {
+        n=1;
+        if global.selecty=3 {
+            global.selecty=0;
+        }
+        else {
+            global.selecty+=n
+            }
+            
+        if global.crafitem[#global.selectx,global.selecty]=0 {
+             
+        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
+        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
+        global.crafitem[#xx,yy]=0
+        global.crafamount[#xx,yy]=0
+       
+        xx=global.selectx;
+        yy=global.selecty;
+        }
+        else {
+        n++
+        }
+        }
+        if keyboard_check_pressed(ord('A')) {
+        n=1;
+        if global.selectx=0 {
+            global.selectx=8;
+        }
+        else {
+            global.selectx-=n;
+            }
+            
+        if global.crafitem[#global.selectx,global.selecty]=0 {
+             
+        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
+        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
+        global.crafitem[#xx,yy]=0
+        global.crafamount[#xx,yy]=0
+       
+        xx=global.selectx;
+        yy=global.selecty;
+        }
+        else {
+        n++
+        }
+        }
+        if keyboard_check_pressed(ord('D')) {
+        n=1;
+        if global.selectx=8 {
+            global.selectx=0;
+        }
+        else {
+            global.selectx+=n
+            }
+            
+        if global.crafitem[#global.selectx,global.selecty]=0 {
+             
+        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
+        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
+        global.crafitem[#xx,yy]=0
+        global.crafamount[#xx,yy]=0
+       
+        xx=global.selectx;
+        yy=global.selecty;
+        }
+        }
+      
+    }
+
+  }  
+//Furnace
+///UI controls
+if global.furnaceui=true {
+    if global.selection="inv" {
+    if keyboard_check_pressed(ord('W')) {
+        if global.selecty=-1{
+            global.selecty=0
+            global.selectx=0
+        }
+    else {
+        global.selecty-=1;
+    }
+        if global.selecty&lt;0 {
+            global.selecty=8;
+        }
+    }
+    if keyboard_check_pressed(ord('S')) {
+        if global.selecty=-1{
+            global.selecty=0
+            global.selectx=0
+        }
+        else {
+            global.selecty+=1;
+        }
+        if global.selecty&gt;8 {
+            global.selecty=0;
+        }
+    }
+    if keyboard_check_pressed(ord('D')) {
+
+        if global.selecty=-1{
+            global.selecty=0
+            global.selectx=0
+        }
+        else {
+            global.selectx+=1;
+        }
+    if global.selectx&gt;3 {
+        global.selectx=0;
+        }
+    }
+if keyboard_check_pressed(ord('A')) {
+    if global.selectx=-1{
+        global.selecty=0
+        global.selectx=0
+    }
+    else {
+    global.selectx-=1;
+    }
+    if global.selectx&lt;0 {
+        global.selectx=3;
+    }
+    }
+}
+    if global.selection="furnace" {
+      
+      if keyboard_check_pressed(ord('D')) {
+            var moved;
+            moved=false;
+            global.selectx+=1;
+    if global.selectx&gt;2 {
+        global.selectx=0;
+        }
+        if moved=false {
+        if global.furnace[#global.selectx,1]=0 {
+        global.furnace[#global.selectx,0]=global.crafitem[#xx,yy]
+        global.furnace[#global.selectx,1]=global.crafamount[#xx,yy];
+        global.crafitem[#xx,yy]=0
+        global.crafamount[#xx,yy]=0
+        xx=global.selectx;
+        moved=true;
+        }
+        }
+        if moved=true {
+        if global.furnace[#global.selectx,1]=0 {
+        global.furnace[#global.selectx,0]=global.furnace[#xx,0]
+        global.furnace[#global.selectx,1]=global.furnace[#xx,1];
+        global.furnace[#xx,0]=0
+        global.furnace[#xx,1]=0
+        xx=global.selectx;
+        }
+    }
+        
+    }
+if keyboard_check_pressed(ord('A')) {
+
+    global.selectx-=1;
+    if global.selectx&lt;0 {
+        global.selectx=2;
+    }
+    }
+}
+    
 }
 </string>
           </argument>
@@ -185,7 +436,7 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Draw furnace GUI
-global.furnacedraw=true;
+global.furnaceui=true
 </string>
           </argument>
         </arguments>
@@ -237,12 +488,62 @@ speed=0     //stops player
           <argument>
             <kind>1</kind>
             <string>///Show inventory, drawn by controller
+global.selecty=-1;
+global.selectx=-1;
 if global.invui=false {
     global.invui=true;
     }
 else {
     global.invui=false;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="13">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if global.furnaceui=true {
+ if global.selection="inv" {
+    global.selection="furnace";
+    select=true;
+    
+    }
+else if global.selection="furnace" {
+    global.selection="inv"
+    }
+
+global.selectx=0;
+global.selecty=0;
+}
+if global.invui=true {
+    if select=false {
+        if global.crafitem[#global.selectx,global.selecty]!=0 {
+        xx=global.selectx;
+        yy=global.selecty;
+        select=true;
+        }
+    }
+    else {
+    select=false;
+    }
+}
+
 </string>
           </argument>
         </arguments>

@@ -119,7 +119,6 @@ if (u=20) {                                               //if the text rises 20
                 if exists=false {
                 for (var j=0;j&lt;4;j++) {
                      for (var i=0;i&lt;9;i++) {
-                        
                             if ds_grid_value_exists(global.crafitem,i,j,i,j,0) {
                                 global.crafitem[#i,j]=global.gathinv[ii,0];
                                 global.crafamount[#i,j]+=global.gathinv[ii,1];
@@ -140,9 +139,9 @@ if (u=20) {                                               //if the text rises 20
         else if ii=array_height_2d(global.gathinv)-1 { 
             if exists=false{ 
             for (var j=0;j&lt;4;j++) {
-            for (var i=0;i&lt;9;i++) {
+                for (var i=0;i&lt;9;i++) {
                     if ds_grid_value_exists(global.crafitem,i,j,i,j,global.gathinv[ii,0]) {
-                        global.crafamount[#i,j]+=global.gathinv[ii,1] break;
+                        global.crafamount[#i,j]+=global.gathinv[ii,1];
                         exists=true; 
                     }
                 if exists=true break;
@@ -251,7 +250,7 @@ var i;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw each screens gui
+            <string>///Draw Comm &amp;&amp; Gath UI
 if (view_current=2)  {
     if global.commui=true {
         draw_set_alpha(0.1);
@@ -294,13 +293,27 @@ if transfer=true {
         transfer=false;
     }
 }
-        
-
-
-
-
-
-//Furnace
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Furnace GUI
 if global.furnaceui=true {
     draw_set_halign ( fa_right );
     draw_sprite(spr_ui_furnace,0,view_xview[3],view_yview[3]);
@@ -329,20 +342,59 @@ if global.furnaceui=true {
                 draw_text_colour(view_xview[3]+345+46+i*65,view_yview[3]+124+46,global.furnace[#i,1],c_white,c_white,c_white,"",1); 
             }
         }
-        
-    
-    if global.selectx!=-1&amp;&amp;global.selecty!=-1 {
+    for (var i=0;i&lt;2;i++) {
+        if global.furnaceoutput[#i,1]&gt;0 {
+            draw_sprite(global.furnaceoutput[#i,0],0,view_xview[3]+378+i*65,view_yview[3]+186)
+            draw_text_colour(view_xview[3]+378+46+i*65,view_yview[3]+186+46,global.furnaceoutput[#i,1],c_white,c_white,c_white,"",1); 
+         }
+       }
+     
+     if global.selectx!=-1&amp;&amp;global.selecty!=-1 {
         if global.selection="inv" {
-    draw_sprite(spr_select_vertical,0,view_xview[3]+indenth-2+(global.selectx*spaceh),view_yview[3]+indentv-3+(global.selecty*spacev))
-    }
+          if obj_crafter.select=true {
+            draw_sprite_stretched(global.spriteselect,0,view_xview[3]+indenth-3+(global.selectx*spaceh),view_yview[3]+indentv+(global.selecty*spacev),32,32);
+            draw_text_color(view_xview[3]+indenth-3+dif+(global.selectx*spaceh),view_yview[3]+indentv+dif+(global.selecty*spacev),global.amountselect,c_white,c_white,c_white,c_black,1);
+            }
+            draw_sprite(spr_select_vertical,0,view_xview[3]+indenth-2+(global.selectx*spaceh),view_yview[3]+indentv-3+(global.selecty*spacev))
+        }
         if global.selection="furnace" {
+            if obj_crafter.select=true {
+                draw_sprite(global.spriteselect,0,view_xview[3]+345+(global.selectx*65),view_yview[3]+124);
+                draw_text_color(view_xview[3]+345+46+(global.selectx*65),view_yview[3]+124+46,global.amountselect,c_white,c_white,c_white,c_black,1);
+            }
         draw_sprite(spr_select,0,view_xview[3]+341+(global.selectx*69),view_yview[3]+125);
         }
-        
+        if global.selection="output" {
+            if obj_crafter.select=true {
+                draw_sprite(global.spriteselect,0,view_xview[3]+378+(global.selectx*65),view_yview[3]+286)
+                draw_text_colour(view_xview[3]+378+46+(global.selectx*65),view_yview[3]+286+46,global.amountselect,c_white,c_white,c_white,"",1); 
+            } 
+            draw_sprite(spr_select,0,view_xview[3]+378+(global.selectx*65),view_yview[3]+286)
     }
 }
+}
 
-///Crafter inventory
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Crafter inventory
 if global.invui=true {
     draw_set_halign ( fa_right )
     draw_sprite(spr_ui_inv,0,view_xview[3],view_yview[3]);
@@ -358,17 +410,19 @@ if global.invui=true {
         for (var i=0;i&lt;9;i++) {
             if global.crafamount[#i,j]&gt;0 {
                 draw_sprite(global.crafitem[#i,j],0,view_xview[3]+indenth+i*spaceh,view_yview[3]+indentv+j*spacev)
-                draw_text_colour(view_xview[3]+indenth+dif+i*spaceh,view_yview[3]+indentv+dif-3+j*spacev,global.crafamount[#i,j],c_white,c_white,c_white,"",1); 
+                draw_text_colour(view_xview[3]+indenth+dif+i*spaceh,view_yview[3]+indentv+dif-3+j*spacev,global.crafamount[#i,j],c_white,c_white,c_white,c_black,1); 
             }
         }
     }
     if global.selectx!=-1&amp;&amp;global.selecty!=-1 {
+    if obj_crafter.select=true {
+        draw_sprite(global.spriteselect,0,view_xview[3]+indenth-3+(global.selectx*spaceh),view_yview[3]+indentv+(global.selecty*spacev));
+        draw_text_color(view_xview[3]+indenth-3+dif+(global.selectx*spaceh),view_yview[3]+indentv+dif+(global.selecty*spacev),global.amountselect,c_white,c_white,c_white,c_black,1);
+        }
     draw_sprite(spr_select,0,view_xview[3]+indenth-3+(global.selectx*spaceh),view_yview[3]+indentv+(global.selecty*spacev))
     }
+    
 }
-
-
-
 
 </string>
           </argument>

@@ -39,9 +39,20 @@ global.selectx=-1;
 global.selecty=-1;
 global.crafitem=ds_grid_create(9,4);
 global.crafamount=ds_grid_create(9,4);
+ds_grid_clear(global.crafitem,0);
+ds_grid_clear(global.crafamount,0);
+global.crafitem[#0,0]=spr_icon_potion;
+global.crafamount[#0,0]=1;
+global.crafitem[#1,0]=spr_icon_wood;
+global.crafamount[#1,0]=10;
+global.crafitem[#2,0]=spr_icon_rock;
+global.crafamount[#2,0]=5;
+
 select=false;
 xx=noone;
 yy=noone;
+global.spriteselect=noone
+global.amountselect=noone;
 </string>
           </argument>
         </arguments>
@@ -133,9 +144,9 @@ speed=max_speed}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///UI controls
+            <string>///UI Inv controls
 
-for (var i=0;i&gt;9;i++) {
+for (var i=0;i&lt;9;i++) {
     for (var j=0;j&gt;4;j++) {
          if global.crafamount[#i,j]=0 {
             global.crafitem[#i,j]=0;
@@ -198,99 +209,375 @@ if keyboard_check_pressed(ord('A')) {
 }
 
 if select=true {
-var n;
+var n,s;
     if keyboard_check_pressed(ord('W')) {
-        n=1;
-        
         if global.selecty=0 {
-            global.selecty=3;
-        }
-        else {
-            global.selecty-=n
+            n=3;
+            while (global.selecty=0) {
+                 if global.crafamount[#global.selectx,n]=0 {
+                    global.selecty=n;
+                }
+                else {
+                    n--;
+                }
             }
-            
-        if global.crafitem[#global.selectx,global.selecty]=0 {
-             
-        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
-        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
-        global.crafitem[#xx,yy]=0
-        global.crafamount[#xx,yy]=0
-       
-        xx=global.selectx;
-        yy=global.selecty;
-        }
-       
-            }
+         }
         
+        else {
+            n=1;
+            s=global.selecty;
+            while  (global.selecty=s) {
+                if global.crafamount[#global.selectx,global.selecty-n]=0 {
+                    global.selecty-=n;
+                }
+                else  {
+                    if global.selecty=1 {
+                        n=3;
+                        while (global.selecty=1) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                     if global.selecty=2 &amp;&amp; global.crafamount[#global.selectx,0]!=0 {
+                        n=3;
+                        while (global.selecty=2) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                      if global.selecty=3 &amp;&amp; global.crafamount[#global.selectx,1]!=0 &amp;&amp; global.crafamount[#global.selectx,0]!=0 {
+                                break; 
+                    }
+                        
+                    else {    
+                        n++;
+                    }
+                }
+            }
+        }
+    }
         
         if keyboard_check_pressed(ord('S')) {
-        n=1;
-        if global.selecty=3 {
-            global.selecty=0;
-        }
-        else {
-            global.selecty+=n
+            if global.selecty=3 {
+                n=0;
+                    while (global.selecty=3) {
+                        if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                         }
+                        else {
+                            n++;
+                        }
+                    }
+                }
+        
+            else {
+                n=1;
+                s=global.selecty;
+                while (global.selecty=s) {
+                    if global.crafamount[#global.selectx,global.selecty+n]=0 {
+                        global.selecty+=n
+                    }
+                    else  {
+                    if global.selecty=2 {
+                        n=0;
+                        while (global.selecty=2) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                        if global.selecty=1 &amp;&amp; global.crafamount[#global.selectx,3]!=0 {
+                            n=0;
+                            while (global.selecty=1) {
+                                if global.crafamount[#global.selectx,n]=0 {
+                                    global.selecty=n;
+                                }
+                                else {
+                                    n--;
+                                }
+                            }
+                        }
+                        if global.selecty=0 &amp;&amp; global.crafamount[#global.selectx,2]!=0 &amp;&amp; global.crafamount[#global.selectx,3]!=0 {
+                                break;
+                        }
+                        else { 
+                         n++;
+                        }
+                }
             }
-            
-        if global.crafitem[#global.selectx,global.selecty]=0 {
-             
-        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
-        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
-        global.crafitem[#xx,yy]=0
-        global.crafamount[#xx,yy]=0
-       
-        xx=global.selectx;
-        yy=global.selecty;
-            }
         }
+    }
         if keyboard_check_pressed(ord('A')) {
-        n=1;
-        if global.selectx=0 {
-            global.selectx=8;
-        }
-        else {
-            global.selectx-=n;
+            if global.selectx=0 {
+                n=8;
+                    while (global.selectx=0) {
+                        if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                         }
+                        else {
+                            n--;
+                        }
+                    }
+                }
+        
+            else {
+                n=1;
+                s=global.selectx;
+                while (global.selectx=s) {
+                    if global.crafamount[#global.selectx-n,global.selecty]=0 {
+                        global.selectx-=n
+                    }
+                    else  {
+                    if global.selectx=1 {
+                        n=8;
+                        while (global.selectx=1) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                    if global.selectx=2 &amp;&amp; global.crafamount[#0,global.selecty]!=0 {
+                        n=8;
+                        while (global.selectx=2) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                    if global.selectx=3 &amp;&amp; global.crafamount[#0,global.selecty]!=0 &amp;&amp; global.crafamount[#1,global.selecty]!=0 {
+                        n=8;
+                        while (global.selectx=3) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                    if global.selectx=4 &amp;&amp; global.crafamount[#0,global.selecty]!=0 &amp;&amp; global.crafamount[#1,global.selecty]!=0 &amp;&amp; global.crafamount[#2,global.selecty]!=0{
+                        n=8;
+                        while (global.selectx=4) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                        if global.selectx=5 &amp;&amp; global.crafamount[#0,global.selecty]!=0 &amp;&amp; global.crafamount[#1,global.selecty]!=0 &amp;&amp; global.crafamount[#2,global.selecty]!=0 &amp;&amp; global.crafamount[#3,global.selecty]!=0{
+                        n=8;
+                        while (global.selectx=5) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                    if global.selectx=6 &amp;&amp; global.crafamount[#0,global.selecty]!=0 &amp;&amp; global.crafamount[#1,global.selecty]!=0 &amp;&amp; global.crafamount[#2,global.selecty]!=0 &amp;&amp; global.crafamount[#3,global.selecty]!=0 &amp;&amp; global.crafamount[#4,global.selecty]!=0{
+                        n=8;
+                        while (global.selectx=6) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                    if global.selectx=7 &amp;&amp; global.crafamount[#0,global.selecty]!=0 &amp;&amp; global.crafamount[#1,global.selecty]!=0 &amp;&amp; global.crafamount[#2,global.selecty]!=0 &amp;&amp; global.crafamount[#3,global.selecty]!=0 &amp;&amp; global.crafamount[#4,global.selecty]!=0 &amp;&amp; global.crafamount[#5,global.selecty]!=0{
+                        n=8;
+                        while (global.selectx=7) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                      if global.selectx=8 &amp;&amp; global.crafamount[#0,global.selecty]!=0 &amp;&amp; global.crafamount[#1,global.selecty]!=0 &amp;&amp; global.crafamount[#2,global.selecty]!=0 &amp;&amp; global.crafamount[#3,global.selecty]!=0 &amp;&amp; global.crafamount[#4,global.selecty]!=0 &amp;&amp; global.crafamount[#5,global.selecty]!=0 &amp;&amp; global.crafamount[#6,global.selecty]!=0{
+                        break;
+                    }
+                    else { 
+                         n++;
+                    }
+                    }
+                }
             }
-            
-        if global.crafitem[#global.selectx,global.selecty]=0 {
-             
-        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
-        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
-        global.crafitem[#xx,yy]=0
-        global.crafamount[#xx,yy]=0
-       
-        xx=global.selectx;
-        yy=global.selecty;
         }
-        }
-        if keyboard_check_pressed(ord('D')) {
-        n=1;
-        if global.selectx=8 {
-            global.selectx=0;
-        }
-        else {
-            global.selectx+=n
+        
+        if keyboard_check_pressed(ord('D'))  {
+            if global.selectx=8 {
+                n=0;
+                    while (global.selectx=8) {
+                        if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                         }
+                        else {
+                            n++;
+                        }
+                    }
+                }
+        
+            else {
+                n=1;
+                s=global.selectx;
+                while (global.selectx=s) {
+                    if global.crafamount[#global.selectx+n,global.selecty]=0 {
+                        global.selectx+=n
+                    }
+                    else  {
+                    if global.selectx=7 {
+                        n=0;
+                        while (global.selectx=1) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                    if global.selectx=6 &amp;&amp; global.crafamount[#8,global.selecty]!=0 {
+                        n=0;
+                        while (global.selectx=6) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                    if global.selectx=5 &amp;&amp; global.crafamount[#8,global.selecty]!=0 &amp;&amp; global.crafamount[7,global.selecty]!=0 {
+                        n=0;
+                        while (global.selectx=5) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                    if global.selectx=4 &amp;&amp; global.crafamount[#8,global.selecty]!=0 &amp;&amp; global.crafamount[#7,global.selecty]!=0 &amp;&amp; global.crafamount[#6,global.selecty]!=0{
+                        n=0;
+                        while (global.selectx=4) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                        if global.selectx=3 &amp;&amp; global.crafamount[#8,global.selecty]!=0 &amp;&amp; global.crafamount[#7,global.selecty]!=0 &amp;&amp; global.crafamount[#6,global.selecty]!=0 &amp;&amp; global.crafamount[#5,global.selecty]!=0{
+                        n=0;
+                        while (global.selectx=3) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                    if global.selectx=2 &amp;&amp; global.crafamount[#8,global.selecty]!=0 &amp;&amp; global.crafamount[#7,global.selecty]!=0 &amp;&amp; global.crafamount[#6,global.selecty]!=0 &amp;&amp; global.crafamount[#5,global.selecty]!=0 &amp;&amp; global.crafamount[#4,global.selecty]!=0{
+                        n=0;
+                        while (global.selectx=2) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                    if global.selectx=1 &amp;&amp; global.crafamount[#8,global.selecty]!=0 &amp;&amp; global.crafamount[#7,global.selecty]!=0 &amp;&amp; global.crafamount[#6,global.selecty]!=0 &amp;&amp; global.crafamount[#5,global.selecty]!=0 &amp;&amp; global.crafamount[#4,global.selecty]!=0 &amp;&amp; global.crafamount[#3,global.selecty]!=0{
+                        n=0;
+                        while (global.selectx=1) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                      if global.selectx=0 &amp;&amp; global.crafamount[#8,global.selecty]!=0 &amp;&amp; global.crafamount[#7,global.selecty]!=0 &amp;&amp; global.crafamount[#2,global.selecty]!=0 &amp;&amp; global.crafamount[#3,global.selecty]!=0 &amp;&amp; global.crafamount[#4,global.selecty]!=0 &amp;&amp; global.crafamount[#5,global.selecty]!=0 &amp;&amp; global.crafamount[#6,global.selecty]!=0{
+                        break;
+                    }
+                    
+                    else { 
+                         n++;
+                    }
+                    }
+                }
             }
-            
-        if global.crafitem[#global.selectx,global.selecty]=0 {
-             
-        global.crafitem[#global.selectx,global.selecty]=global.crafitem[#xx,yy]
-        global.crafamount[#global.selectx,global.selecty]=global.crafamount[#xx,yy];
-        global.crafitem[#xx,yy]=0
-        global.crafamount[#xx,yy]=0
-       
-        xx=global.selectx;
-        yy=global.selecty;
         }
-        }
-      
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Furnace UI controls
+
+    for (var i=0;i&lt;3;i++) {
+         if global.furnace[#i,1]=0 {
+            global.furnace[#i,0]=0;
+         }
     }
 
-  }  
-//Furnace
-///UI controls
+    for (var i=0;i&lt;2;i++) {
+         if global.furnaceoutput[#i,1]=0 {
+            global.furnaceoutput[#i,0]=0;
+         }
+    }
+    
 if global.furnaceui=true {
+
     if global.selection="inv" {
+        if select=false {
     if keyboard_check_pressed(ord('W')) {
         if global.selecty=-1{
             global.selecty=0
@@ -340,40 +627,441 @@ if keyboard_check_pressed(ord('A')) {
         global.selectx=3;
     }
     }
+    }
+    
+    if select=true {
+        if keyboard_check_pressed(ord('W')) {
+        if global.selecty=0 {
+            n=8;
+            while (global.selecty=0) {
+                 if global.crafamount[#global.selectx,n]=0 {
+                    global.selecty=n;
+                }
+                else {
+                    n--;
+                }
+            }
+         }
+        
+        else {
+            n=1;
+            s=global.selecty;
+            while  (global.selecty=s) {
+                if global.crafamount[#global.selectx,global.selecty-n]=0 {
+                    global.selecty-=n;
+                }
+                else  {
+                    if global.selecty=1 {
+                        n=8;
+                        while (global.selecty=1) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                     if global.selecty=2 &amp;&amp; global.crafamount[#global.selectx,0]!=0 {
+                        n=8;
+                        while (global.selecty=2) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                      if global.selecty=3 &amp;&amp; global.crafamount[#global.selectx,1]!=0 &amp;&amp; global.crafamount[#global.selectx,0]!=0 {
+                        n=8;
+                        while (global.selecty=3) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                       if global.selecty=4 &amp;&amp; global.crafamount[#global.selectx,1]!=0 &amp;&amp; global.crafamount[#global.selectx,0]!=0 &amp;&amp; global.crafamount[#global.selectx,2]!=0{
+                        n=8;
+                        while (global.selecty=4) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                        if global.selecty=5 &amp;&amp; global.crafamount[#global.selectx,1]!=0 &amp;&amp; global.crafamount[#global.selectx,0]!=0 &amp;&amp; global.crafamount[#global.selectx,2]!=0 &amp;&amp; global.crafamount[#global.selectx,3]!=0{
+                        n=8;
+                        while (global.selecty=5) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                    if global.selecty=6 &amp;&amp; global.crafamount[#global.selectx,1]!=0 &amp;&amp; global.crafamount[#global.selectx,0]!=0 &amp;&amp; global.crafamount[#global.selectx,2]!=0 &amp;&amp; global.crafamount[#global.selectx,3]!=0 &amp;&amp; global.crafamount[#global.selectx,4]!=0{
+                        n=8;
+                        while (global.selecty=6) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                    if global.selecty=7 &amp;&amp; global.crafamount[#global.selectx,1]!=0 &amp;&amp; global.crafamount[#global.selectx,0]!=0 &amp;&amp; global.crafamount[#global.selectx,2]!=0 &amp;&amp; global.crafamount[#global.selectx,3]!=0 &amp;&amp; global.crafamount[#global.selectx,4]!=0 &amp;&amp; global.crafamount[#global.selectx,5]!=0{
+                        n=8;
+                        while (global.selecty=7) {
+                                global.selecty=n;
+                                break;
+                            
+                            }
+                    if global.selecty=8 &amp;&amp; global.crafamount[#global.selectx,1]!=0 &amp;&amp; global.crafamount[#global.selectx,0]!=0 &amp;&amp; global.crafamount[#global.selectx,2]!=0 &amp;&amp; global.crafamount[#global.selectx,3]!=0 &amp;&amp; global.crafamount[#global.selectx,4]!=0 &amp;&amp; global.crafamount[#global.selectx,5]!=0 &amp;&amp; global.crafamount[#global.selectx,6]!=0{
+                                break;
+                            }
+                          
+                        
+                    }    
+                    else {    
+                        n++;
+                    }
+                }
+            }
+        }
+    }
+    if keyboard_check_pressed(ord('S')) {
+    if global.selecty=8 {
+            n=0;
+            while (global.selecty=8) {
+                 if global.crafamount[#global.selectx,n]=0 {
+                    global.selecty=n;
+                }
+                else {
+                    n++;
+                }
+            }
+         }
+        
+        else {
+            n=1;
+            s=global.selecty;
+            while  (global.selecty=s) {
+                if global.crafamount[#global.selectx,global.selecty+n]=0 {
+                    global.selecty-=n;
+                }
+                else  {
+                    if global.selecty=7 {
+                        n=0;
+                        while (global.selecty=1) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                     if global.selecty=6 &amp;&amp; global.crafamount[#global.selectx,8]!=0 {
+                        n=0;
+                        while (global.selecty=6) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                      if global.selecty=5 &amp;&amp; global.crafamount[#global.selectx,8]!=0 &amp;&amp; global.crafamount[#global.selectx,7]!=0 {
+                        n=0;
+                        while (global.selecty=5) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                       if global.selecty=4 &amp;&amp; global.crafamount[#global.selectx,8]!=0 &amp;&amp; global.crafamount[#global.selectx,7]!=0 &amp;&amp; global.crafamount[#global.selectx,6]!=0{
+                        n=0;
+                        while (global.selecty=4) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                        if global.selecty=3 &amp;&amp; global.crafamount[#global.selectx,8]!=0 &amp;&amp; global.crafamount[#global.selectx,7]!=0 &amp;&amp; global.crafamount[#global.selectx,6]!=0 &amp;&amp; global.crafamount[#global.selectx,5]!=0{
+                        n=0;
+                        while (global.selecty=3) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                    if global.selecty=2 &amp;&amp; global.crafamount[#global.selectx,8]!=0 &amp;&amp; global.crafamount[#global.selectx,7]!=0 &amp;&amp; global.crafamount[#global.selectx,6]!=0 &amp;&amp; global.crafamount[#global.selectx,5]!=0 &amp;&amp; global.crafamount[#global.selectx,4]!=0{
+                        n=0;
+                        while (global.selecty=2) {
+                            if global.crafamount[#global.selectx,n]=0 {
+                                global.selecty=n;
+                                break;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                    if global.selecty=1 &amp;&amp; global.crafamount[#global.selectx,8]!=0 &amp;&amp; global.crafamount[#global.selectx,7]!=0 &amp;&amp; global.crafamount[#global.selectx,6]!=0 &amp;&amp; global.crafamount[#global.selectx,5]!=0 &amp;&amp; global.crafamount[#global.selectx,4]!=0 &amp;&amp; global.crafamount[#global.selectx,3]!=0{
+                        n=0;
+                        while (global.selecty=1) {
+                                global.selecty=n;
+                                break;
+                            
+                            }
+                    if global.selecty=0 &amp;&amp; global.crafamount[#global.selectx,8]!=0 &amp;&amp; global.crafamount[#global.selectx,7]!=0 &amp;&amp; global.crafamount[#global.selectx,2]!=0 &amp;&amp; global.crafamount[#global.selectx,3]!=0 &amp;&amp; global.crafamount[#global.selectx,4]!=0 &amp;&amp; global.crafamount[#global.selectx,5]!=0 &amp;&amp; global.crafamount[#global.selectx,6]!=0{
+                                break;
+                            }
+                          
+                        
+                    }    
+                    else {    
+                        n++;
+                    }
+                }
+            }
+        }
+    }//   
+     if keyboard_check_pressed(ord('A')) {
+            if global.selectx=0 {
+                n=3;
+                    while (global.selectx=0) {
+                        if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                         }
+                        else {
+                            n--;
+                        }
+                    }
+                }
+        
+            else {
+                n=1;
+                s=global.selectx;
+                while (global.selectx=s) {
+                    if global.crafamount[#global.selectx-n,global.selecty]=0 {
+                        global.selectx-=n
+                    }
+                    else  {
+                    if global.selectx=1 {
+                        n=3;
+                        while (global.selectx=1) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n--;
+                            }
+                        }
+                    }
+                        if global.selectx=2 &amp;&amp; global.crafamount[#0,global.selecty]!=0 {
+                            n=3;
+                            global.selectx=n;
+                        }
+                               
+                            
+                        if global.selectx=3 &amp;&amp; global.crafamount[#1,global.selecty]!=0 &amp;&amp; global.crafamount[#0,global.selecty]!=0 {
+                                break;
+                        }
+                        else { 
+                         n++;
+                        }
+                } 
+           } 
+        }
+     }
+     
+          if keyboard_check_pressed(ord('D')) {
+            if global.selectx=3 {
+                n=0;
+                    while (global.selectx=3) {
+                        if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                         }
+                        else {
+                            n++;
+                        }
+                    }
+                }
+        
+            else {
+                n=1;
+                s=global.selectx;
+                while (global.selectx=s) {
+                    if global.crafamount[#global.selectx+n,global.selecty]=0 {
+                        global.selectx+=n
+                    }
+                    else  {
+                    if global.selectx=2 {
+                        n=0;
+                        while (global.selectx=2) {
+                            if global.crafamount[#n,global.selecty]=0 {
+                                global.selectx=n;
+                            }
+                            else {
+                            n++;
+                            }
+                        }
+                    }
+                        if global.selectx=1 &amp;&amp; global.crafamount[#3,global.selecty]!=0 {
+                            n=0;
+                            global.selectx=n;
+                        }
+                               
+                            
+                        if global.selectx=0 &amp;&amp; global.crafamount[#2,global.selecty]!=0 &amp;&amp; global.crafamount[#3,global.selecty]!=0 {
+                                break;
+                        }
+                        else { 
+                         n++;
+                        }
+                } 
+           } 
+        }
+     }
+    }
 }
     if global.selection="furnace" {
-      
+    if select=true {
       if keyboard_check_pressed(ord('D')) {
-            global.selectx+=1;
-    if global.selectx&gt;2 {
-        global.selectx=0;
+            if global.selectx=2 {
+                n=0;
+                    while (global.selectx=2) {
+                        if global.furnace[#n,1]=0 {
+                                global.selectx=n;
+                                break;
+                         }
+                        else {
+                            n++;
+                        }
+                    }
+                }
+        
+            else {
+                n=1;
+                s=global.selectx;
+                while (global.selectx=s) {
+                    if global.furnace[#global.selectx+n,1]=0 {
+                        global.selectx+=n;
+                        break;
+                    }
+                    else  {
+                    if global.selectx=1 {
+                        n=0;
+                        global.selectx=n;
+                        }
+                        if global.selectx=0 &amp;&amp; global.furnace[#2,1]!=0 {
+                            break;
+                        }
+                        else {
+                            n++;
+                        }
+                    }
+                }
+            }
         }
+            if keyboard_check_pressed(ord('A')) {
+            if global.selectx=0 {
+                n=2;
+                    while (global.selectx=0) {
+                        if global.furnace[#n,1]=0 {
+                                global.selectx=n;
+                                break;
+                         }
+                        else {
+                            n--;
+                        }
+                    }
+                }
+            
         
-        if global.furnace[#global.selectx,1]=0 {
-        global.furnace[#global.selectx,0]=global.furnace[#xx,0]
-        global.furnace[#global.selectx,1]=global.furnace[#xx,1];
-        global.furnace[#xx,0]=0
-        global.furnace[#xx,1]=0
-        xx=global.selectx;
-        
+            else {
+                n=1;
+                s=global.selectx;
+                while (global.selectx=s) {
+                    if global.furnace[#global.selectx-n,1]=0 {
+                        global.selectx-=n
+                        break;
+                    }
+                    else  {
+                    if global.selectx=1 {
+                        n=2;
+                        global.selectx=n;
+                    }
+                    if global.selectx=2 &amp;&amp; global.furnace[#0,1]!=0 {
+                        break;
+                    }
+                    else {
+                        n++
+                    }
+                    }
+                }
+            }
+        }
     }
         
+    
+        
+        if select=false {
+            if keyboard_check_pressed(ord('D')) {
+                global.selectx+=1;
+                if global.selectx&gt;2 {
+                        global.selectx=0;
+                }
+            }
+            if keyboard_check_pressed(ord('A')) {
+                global.selectx-=1;
+                if global.selectx&lt;0 {
+                    global.selectx=2;
+                }
+            }   
+        }      
     }
-if keyboard_check_pressed(ord('A')) {
-
-    global.selectx-=1;
-    if global.selectx&lt;0 {
-        global.selectx=2;
-    }
-        if global.furnace[#global.selectx,1]=0 {
-        global.furnace[#global.selectx,0]=global.furnace[#xx,0]
-        global.furnace[#global.selectx,1]=global.furnace[#xx,1];
-        global.furnace[#xx,0]=0
-        global.furnace[#xx,1]=0
-        xx=global.selectx;
-    }
-}
-}    
+    if global.selection="output" {
+            if keyboard_check_pressed(ord('A')) || keyboard_check_pressed(ord('D')) {
+                if global.selectx=0 {
+                    global.selectx=1;
+                }
+                   else {
+                    global.selectx=0;
+                }
+            }
+        }
+    
 }
 </string>
           </argument>
@@ -507,43 +1195,164 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.furnaceui=true {
-    
- if global.selection="inv" {
-    global.selection="furnace";
-    if global.crafitem[#global.selecty,global.selectx]!=0 {
-        if global.furnace[#global.selecty,1]=0 {
-            xx=global.selectx;
-            yy=global.selecty;
-            global.furnace[#global.selectx,0]=global.crafitem[#yy,xx]
-            global.furnace[#global.selectx,1]=global.crafamount[#yy,xx];
-            global.crafitem[#yy,xx]=0
-            global.crafamount[#yy,xx]=0
-            xx=global.selectx;
-            select=true;
-        }
-    }
- }
-else if global.selection="furnace" {
-    global.selection="inv"
-    
-    }
-    global.selectx=0;
-    global.selecty=0;
-}
-
+            <string>///UI Inv
 if global.invui=true {
     if select=false {
-        if global.crafitem[#global.selectx,global.selecty]!=0 {
-        xx=global.selectx;
-        yy=global.selecty;
+        if global.crafamount[#global.selectx,global.selecty]!=0 {
+        global.spriteselect=global.crafitem[#global.selectx,global.selecty];
+        global.amountselect=global.crafamount[#global.selectx,global.selecty];
+        global.crafitem[#global.selectx,global.selecty]=0;
+        global.crafamount[#global.selectx,global.selecty]=0;
         select=true;
         }
     }
     else {
+    global.crafitem[#global.selectx,global.selecty]=global.spriteselect;
+    global.crafamount[#global.selectx,global.selecty]+=global.amountselect;
     select=false;
     }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Furnace UI
+if global.furnaceui=true {
+    
+ if global.selection="inv" {
+ 
+    if global.crafamount[#global.selecty,global.selectx]!=0 {
+        n=0;
+        while (select=false) {
+        if global.furnace[#n,1]=0 {
+            global.spriteselect=global.crafitem[#global.selecty,global.selectx];
+            global.amountselect=global.crafamount[#global.selecty,global.selectx];
+            global.crafitem[#global.selecty,global.selectx]=0
+            global.crafamount[#global.selecty,global.selectx]=0;
+            global.selection="furnace";
+            global.selectx=n;
+            global.selecty=0;
+            select=true;
+        }
+        else {
+            if n!=2 {
+                n++;
+            }
+            else {
+                global.selection="output"
+            }
+        }
+        if select=true break;
+        }
+    }
+    else {
+        global.selectx=0;
+        global.selecty=0;
+        global.selection="output";
+        select=false;
+        exit;
+        }
+ }
+if global.selection="furnace" {
+    if select=true {
+        global.furnace[#global.selectx,0]=global.spriteselect;
+        global.furnace[#global.selectx,1]=global.amountselect;
+        select=false;
+    }
+    else {
+        if global.furnace[#global.selectx,1]!=0 {
+        global.spriteselect=global.furnace[#global.selectx,0];
+        global.amountselect=global.furnace[#global.selectx,1];
+        var i,j;
+        i=0;
+        j=0;
+        while (global.selection="furnace") {
+            if global.crafamount[#i,j]=0{
+                global.selectx=j;
+                global.selecty=i;
+                global.selection="inv" 
+            }
+            else {
+                if i=8 {
+                    if j!=4 {
+                    i=0;
+                    j++;
+                    }
+                    else {
+                    exit;
+                    }
+                }
+                else {
+                    i++;
+                }
+            }
+            if global.selection="inv" break;
+    
+        }
+    }
+    else {
+        global.selection="output";
+        global.selectx=0;
+        global.selecty=0;
+        exit;
+        }
+    }
+}
+if global.selection="output" {
+    if global.furnaceoutput[#global.selectx,1]!=0 {
+        global.spriteselect=global.furnaceoutput[#global.selectx,0];
+        global.amountselect=global.furnaceoutput[#global.selectx,1];
+        select=true;
+        i=0;
+        j=0;
+        while (global.selection="output") {
+            if global.crafamount[#i,j]=0 {
+                global.selectx=j;
+                global.selecty=i;
+                global.selection="inv" ;
+            }
+            else {
+                if i=8 {
+                    if j!=4 {
+                    i=0;
+                    j++;
+                    }
+                    else {
+                    exit;
+                    }
+                }
+                else {
+                    i++;
+                }
+            }
+            if global.selection="inv" break;
+        }
+    }
+    else {
+        select=false;
+        global.selectx=0;
+        global.selecty=0;
+        global.selection="inv";
+    }
+}
+}
+
 
 
 </string>

@@ -27,6 +27,56 @@
             <kind>1</kind>
             <string>global.furnace=ds_grid_create(3,2);
 global.ignite=false;
+global.furnaceoutput=ds_grid_create(2,2);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Rock-&gt;Metal
+var done;
+done=false;
+if global.ignite=true {
+    for (var j=0; j&lt;3; j++) {
+        if global.furnace[#j,0]=spr_icon_rock {
+            global.furnace[#j,1]-=3;
+        }
+    }
+    for (var j=0; j&lt;2; j++) {
+        if global.furnaceoutput[#j,0]=spr_icon_metal {
+            global.furnaceoutput[#j,1]++;
+            done=true
+        }
+        if done=true break;
+    }
+    if done=false {
+        for (var j=0; j&lt;2; j++) {
+        if global.furnaceoutput[#j,0]=0 {
+            global.furnaceoutput[#j,0]=spr_icon_metal;
+            global.furnaceoutput[#j,0]++;
+        }
+    }
+}
+alarm[1]=299;
+}
+        
 </string>
           </argument>
         </arguments>
@@ -49,14 +99,20 @@ global.ignite=false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.ignite=true {
+            <string>///Wood burning
+if global.ignite=true {
     for (var i=0;i&lt;3;i++) {
         if global.furnace[#i,0]=spr_icon_wood {
-            global.furnace[#i,1]-=1;
+            if global.furnace[#i,1]&gt;0 {
+            global.furnace[#i,1]--;
+            break;
+            }
         }
+        alarm[0]=300;
     }
-    alarm[0]=30;
 }
+
+
 </string>
           </argument>
         </arguments>
@@ -79,16 +135,31 @@ global.ignite=false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>for (var i=0;i&lt;3;i++) {
-    if global.furnace[#i,0]=spr_icon_wood {
-        global.ignite=true;
-        alarm[0]=30;//needs to be called once!!!
-    }
-    if global.ignite=true break;
+            <string>///Input-&gt;Output set alarms
+    if ds_grid_value_exists(global.furnace,0,0,2,0,spr_icon_wood) {
+            if alarm[0]=-1 {
+                global.ignite=true;
+                alarm[0]=30;
+            }
+        }  
     else {
         global.ignite=false;
     }
-}
+    if global.ignite=true {
+        if ds_grid_value_exists(global.furnace,0,0,2,0,spr_icon_rock) {
+            if alarm[1]=-1 {
+                alarm[1]=28;
+                exit;
+            }
+        }
+        else {
+            alarm[1]=-1;
+        }
+    }
+    
+
+
+    
 </string>
           </argument>
         </arguments>

@@ -27,7 +27,10 @@
             <kind>1</kind>
             <string>global.furnace=ds_grid_create(3,2);
 global.ignite=false;
+ds_grid_clear(global.furnace,-1);
+
 global.furnaceoutput=ds_grid_create(2,2);
+ds_grid_clear(global.furnaceoutput,-1);
 </string>
           </argument>
         </arguments>
@@ -56,7 +59,12 @@ done=false;
 if global.ignite=true {
     for (var j=0; j&lt;3; j++) {
         if global.furnace[#j,0]=spr_icon_rock {
+            if global.furnace[#j,1]&gt;=3 {
             global.furnace[#j,1]-=3;
+            }
+            else {
+            global.furnace[#j,1]=0;
+            }
         }
     }
     for (var j=0; j&lt;2; j++) {
@@ -68,13 +76,20 @@ if global.ignite=true {
     }
     if done=false {
         for (var j=0; j&lt;2; j++) {
-        if global.furnaceoutput[#j,0]=0 {
+        if global.furnaceoutput[#j,1]=-1 {
             global.furnaceoutput[#j,0]=spr_icon_metal;
-            global.furnaceoutput[#j,0]++;
+            done=true;
+            if global.furnaceoutput[#j,1]=-1 {
+            global.furnaceoutput[#j,1]=1;
+            }
+            else {
+                global.furnaceoutput[#j,1]++;
+                }
         }
+        if done=true break;
     }
 }
-alarm[1]=299;
+alarm[1]=28;
 }
         
 </string>

@@ -60,6 +60,7 @@
       <sprite>sprites\spr_marker</sprite>
       <sprite>sprites\spr_crafter_glow</sprite>
       <sprite>sprites\spr_crafer</sprite>
+      <sprite>sprites\spr_spawn</sprite>
       <sprite>sprites\spr_commander</sprite>
       <sprite>sprites\spr_wall_yy</sprite>
       <sprite>sprites\spr_wall_y</sprite>
@@ -71,10 +72,21 @@
       <sprite>sprites\spr_gatherer_left</sprite>
       <sprite>sprites\spr_gatherer_down</sprite>
     </sprites>
+    <sprites name="Enemy">
+      <sprite>sprites\spr_goblin_up</sprite>
+      <sprite>sprites\spr_goblin_right_up</sprite>
+      <sprite>sprites\spr_goblin_left_up</sprite>
+      <sprite>sprites\spr_goblin_right</sprite>
+      <sprite>sprites\spr_goblin_left</sprite>
+      <sprite>sprites\spr_goblin_down_right</sprite>
+      <sprite>sprites\spr_goblin_left_down</sprite>
+      <sprite>sprites\spr_goblin_down</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths">
     <path>paths\path0</path>
+    <path>paths\path1</path>
   </paths>
   <scripts name="scripts">
     <script>scripts\path_get_nearest_pos.gml</script>
@@ -103,6 +115,7 @@
     <object>objects\obj_armyleader</object>
     <object>objects\obj_armygui</object>
     <object>objects\obj_window</object>
+    <object>objects\obj_spawn</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room_1</room>

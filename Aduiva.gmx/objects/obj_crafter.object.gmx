@@ -564,13 +564,16 @@ var n,s;
 
     for (var i=0;i&lt;3;i++) {
          if global.furnace[#i,1]=0 {
-            global.furnace[#i,0]=0;
+            global.furnace[#i,0]=-1;
+            global.furnace[#i,1]=-1;
          }
     }
 
     for (var i=0;i&lt;2;i++) {
          if global.furnaceoutput[#i,1]=0 {
-            global.furnaceoutput[#i,0]=0;
+             global.furnaceoutput[#i,0]=-1;
+             global.furnaceoutput[#i,0]=-1;
+             
          }
     }
     
@@ -636,6 +639,7 @@ if keyboard_check_pressed(ord('A')) {
             while (global.selecty=0) {
                  if global.crafamount[#global.selectx,n]=0 {
                     global.selecty=n;
+                    break;
                 }
                 else {
                     n--;
@@ -761,7 +765,7 @@ if keyboard_check_pressed(ord('A')) {
             s=global.selecty;
             while  (global.selecty=s) {
                 if global.crafamount[#global.selectx,global.selecty+n]=0 {
-                    global.selecty-=n;
+                    global.selecty+=n;
                 }
                 else  {
                     if global.selecty=7 {
@@ -961,7 +965,7 @@ if keyboard_check_pressed(ord('A')) {
             if global.selectx=2 {
                 n=0;
                     while (global.selectx=2) {
-                        if global.furnace[#n,1]=0 {
+                        if global.furnace[#n,1]=-1 {
                                 global.selectx=n;
                                 break;
                          }
@@ -975,7 +979,7 @@ if keyboard_check_pressed(ord('A')) {
                 n=1;
                 s=global.selectx;
                 while (global.selectx=s) {
-                    if global.furnace[#global.selectx+n,1]=0 {
+                    if global.furnace[#global.selectx+n,1]=-1 {
                         global.selectx+=n;
                         break;
                     }
@@ -984,7 +988,7 @@ if keyboard_check_pressed(ord('A')) {
                         n=0;
                         global.selectx=n;
                         }
-                        if global.selectx=0 &amp;&amp; global.furnace[#2,1]!=0 {
+                        if global.selectx=0 &amp;&amp; global.furnace[#2,1]!=-1 {
                             break;
                         }
                         else {
@@ -998,7 +1002,7 @@ if keyboard_check_pressed(ord('A')) {
             if global.selectx=0 {
                 n=2;
                     while (global.selectx=0) {
-                        if global.furnace[#n,1]=0 {
+                        if global.furnace[#n,1]=-1 {
                                 global.selectx=n;
                                 break;
                          }
@@ -1013,7 +1017,7 @@ if keyboard_check_pressed(ord('A')) {
                 n=1;
                 s=global.selectx;
                 while (global.selectx=s) {
-                    if global.furnace[#global.selectx-n,1]=0 {
+                    if global.furnace[#global.selectx-n,1]=-1 {
                         global.selectx-=n
                         break;
                     }
@@ -1022,7 +1026,7 @@ if keyboard_check_pressed(ord('A')) {
                         n=2;
                         global.selectx=n;
                     }
-                    if global.selectx=2 &amp;&amp; global.furnace[#0,1]!=0 {
+                    if global.selectx=2 &amp;&amp; global.furnace[#0,1]!=-1 {
                         break;
                     }
                     else {
@@ -1164,6 +1168,7 @@ speed=0     //stops player
           <argument>
             <kind>1</kind>
             <string>///Show inventory, drawn by controller
+if select=false {
 global.selecty=-1;
 global.selectx=-1;
 global.furnaceui=false;
@@ -1172,6 +1177,7 @@ if global.invui=false {
     }
 else {
     global.invui=false;
+}
 }
 </string>
           </argument>
@@ -1234,13 +1240,13 @@ if global.invui=true {
             <kind>1</kind>
             <string>///Furnace UI
 if global.furnaceui=true {
-    
+
  if global.selection="inv" {
- 
+    if select=false {
     if global.crafamount[#global.selecty,global.selectx]!=0 {
         n=0;
         while (select=false) {
-        if global.furnace[#n,1]=0 {
+        if global.furnace[#n,1]=-1 {
             global.spriteselect=global.crafitem[#global.selecty,global.selectx];
             global.amountselect=global.crafamount[#global.selecty,global.selectx];
             global.crafitem[#global.selecty,global.selectx]=0
@@ -1254,11 +1260,11 @@ if global.furnaceui=true {
             if n!=2 {
                 n++;
             }
-            else {
+            else if n=2 {
                 global.selection="output"
             }
         }
-        if select=true break;
+        if select=true exit;
         }
     }
     else {
@@ -1269,21 +1275,31 @@ if global.furnaceui=true {
         exit;
         }
  }
-if global.selection="furnace" {
+ else if select=true {
+    global.crafitem[#global.selecty,global.selectx]=global.spriteselect;
+    global.crafamount[#global.selecty,global.selectx]=global.amountselect;
+    select=false;
+    }
+}
+else if global.selection="furnace" {
     if select=true {
         global.furnace[#global.selectx,0]=global.spriteselect;
         global.furnace[#global.selectx,1]=global.amountselect;
         select=false;
     }
     else {
-        if global.furnace[#global.selectx,1]!=0 {
+        global.selection="output";
+        global.selectx=0;
+        global.selecty=0;
+        exit;
+        /*if global.furnace[#global.selectx,1]!=-1 {
         global.spriteselect=global.furnace[#global.selectx,0];
         global.amountselect=global.furnace[#global.selectx,1];
         var i,j;
         i=0;
         j=0;
         while (global.selection="furnace") {
-            if global.crafamount[#i,j]=0{
+            if global.crafamount[#i,j]=-1{
                 global.selectx=j;
                 global.selecty=i;
                 global.selection="inv" 
@@ -1304,20 +1320,22 @@ if global.selection="furnace" {
             }
             if global.selection="inv" break;
     
-        }
+        }*/
     }
-    else {
+    /*else {
         global.selection="output";
         global.selectx=0;
         global.selecty=0;
         exit;
-        }
+        }*/
     }
-}
-if global.selection="output" {
-    if global.furnaceoutput[#global.selectx,1]!=0 {
+
+else if global.selection="output" {
+    if global.furnaceoutput[#global.selectx,1]!=-1 {
         global.spriteselect=global.furnaceoutput[#global.selectx,0];
         global.amountselect=global.furnaceoutput[#global.selectx,1];
+        global.furnaceoutput[#global.selectx,0]=-1;
+        global.furnaceoutput[#global.selectx,1]=-1;
         select=true;
         i=0;
         j=0;
@@ -1326,6 +1344,7 @@ if global.selection="output" {
                 global.selectx=j;
                 global.selecty=i;
                 global.selection="inv" ;
+                exit;
             }
             else {
                 if i=8 {
@@ -1341,7 +1360,7 @@ if global.selection="output" {
                     i++;
                 }
             }
-            if global.selection="inv" break;
+            if global.selection="inv" exit;
         }
     }
     else {

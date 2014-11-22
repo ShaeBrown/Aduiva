@@ -226,8 +226,31 @@ var i;
              instance_create(view_xview[2]+25+((i mod 20)*25),view_yview[2]+25+((i div 20))*25,obj_armygui);  //loop that draws number of army in columns and rows
              global.num=i;
   }
-  
+  randomize();
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>mp_grid_destroy(global.grid);
 </string>
           </argument>
         </arguments>
@@ -316,7 +339,9 @@ if transfer=true {
             <string>///Furnace GUI
 if global.furnaceui=true {
     draw_set_halign ( fa_right );
+    draw_enable_alphablend(false);
     draw_sprite(spr_ui_furnace,0,view_xview[3],view_yview[3]);
+    draw_enable_alphablend(true);
     var spaceh,spacev,height,length,indentv,indenth,dif;
     indenth=14;
     indentv=14;
@@ -344,18 +369,20 @@ if global.furnaceui=true {
         }
     for (var i=0;i&lt;2;i++) {
         if global.furnaceoutput[#i,1]&gt;0 {
-            draw_sprite(global.furnaceoutput[#i,0],0,view_xview[3]+378+i*65,view_yview[3]+186)
-            draw_text_colour(view_xview[3]+378+46+i*65,view_yview[3]+186+46,global.furnaceoutput[#i,1],c_white,c_white,c_white,"",1); 
+            draw_sprite(global.furnaceoutput[#i,0],0,view_xview[3]+378+i*65,view_yview[3]+286)
+            draw_text_colour(view_xview[3]+378+46+i*65,view_yview[3]+286+46,global.furnaceoutput[#i,1],c_white,c_white,c_white,"",1); 
          }
        }
      
      if global.selectx!=-1&amp;&amp;global.selecty!=-1 {
         if global.selection="inv" {
           if obj_crafter.select=true {
+
             draw_sprite_stretched(global.spriteselect,0,view_xview[3]+indenth-3+(global.selectx*spaceh),view_yview[3]+indentv+(global.selecty*spacev),32,32);
+            
             draw_text_color(view_xview[3]+indenth-3+dif+(global.selectx*spaceh),view_yview[3]+indentv+dif+(global.selecty*spacev),global.amountselect,c_white,c_white,c_white,c_black,1);
-            }
-            draw_sprite(spr_select_vertical,0,view_xview[3]+indenth-2+(global.selectx*spaceh),view_yview[3]+indentv-3+(global.selecty*spacev))
+            }           
+            draw_sprite(spr_select_vertical,0,view_xview[3]+indenth-2+(global.selectx*spaceh),view_yview[3]+indentv-3+(global.selecty*spacev));
         }
         if global.selection="furnace" {
             if obj_crafter.select=true {
@@ -367,9 +394,9 @@ if global.furnaceui=true {
         if global.selection="output" {
             if obj_crafter.select=true {
                 draw_sprite(global.spriteselect,0,view_xview[3]+378+(global.selectx*65),view_yview[3]+286)
-                draw_text_colour(view_xview[3]+378+46+(global.selectx*65),view_yview[3]+286+46,global.amountselect,c_white,c_white,c_white,"",1); 
+                draw_text_colour(view_xview[3]+378+46+(global.selectx*65),view_yview[3]+286+43,global.amountselect,c_white,c_white,c_white,"",1); 
             } 
-            draw_sprite(spr_select,0,view_xview[3]+378+(global.selectx*65),view_yview[3]+286)
+            draw_sprite(spr_select,0,view_xview[3]+378+(global.selectx*65),view_yview[3]+286);
     }
 }
 }
@@ -397,7 +424,9 @@ if global.furnaceui=true {
             <string>///Crafter inventory
 if global.invui=true {
     draw_set_halign ( fa_right )
+    draw_enable_alphablend(false);
     draw_sprite(spr_ui_inv,0,view_xview[3],view_yview[3]);
+    draw_enable_alphablend(true);
     var spaceh,spacev,height,length,indentv,indenth,dif;
     indenth=33;
     indentv=104;

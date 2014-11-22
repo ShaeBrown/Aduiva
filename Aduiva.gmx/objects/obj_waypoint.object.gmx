@@ -30,8 +30,7 @@ radius=0    //increasing radius
 draw=true;  //to draw?
 alarm[1]=1; //alarm to increase radius
 alarm[2]=20;//alarm to draw cross
-x=mouse_x
-y=mouse_y
+
 </string>
           </argument>
         </arguments>

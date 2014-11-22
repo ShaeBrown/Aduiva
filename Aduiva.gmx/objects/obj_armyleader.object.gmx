@@ -29,6 +29,8 @@
 selected=false;    //is the player selected 
 xx=0;             //variable used for x/y cordinates
 yy=0;
+sx=0;
+sy=0;
 global.cnt=0;
 groupsize=0;
 global.moveselected=0;
@@ -40,7 +42,7 @@ mypath=path_add();
 dx=global.dx;
 dy=global.dy;
 mp_grid_path(global.grid,grouppath,x,y,dx,dy,1);  //make a new path from the closest cordinates on current path to the new destination
-            
+attackpath=path_add();            
 pos1=1; //This holds the next point on the global path to move to...
 x1=path_get_point_x(grouppath,pos1); //This gets the x/y coords of the next point...
 y1=path_get_point_y(grouppath,pos1);
@@ -48,7 +50,7 @@ mp_grid_path(global.grid,mypath,x,y,x1,y1,true); //Create the short path...
 pos2=1;
 x2=path_get_point_x(mypath,pos2); //This gets the x/y coords of the next point on the short path...
 y2=path_get_point_y(mypath,pos2);
-                    
+grid=-1;
 </string>
           </argument>
         </arguments>
@@ -73,15 +75,23 @@ y2=path_get_point_y(mypath,pos2);
             <kind>1</kind>
             <string>///Delete path
 if path_exists(mypath) {
-
     path_delete(mypath);
     
 }
 if path_exists(grouppath) {
-
     path_delete(grouppath);
 
 }
+if path_exists(attackpath) {
+    path_delete(attackpath);
+
+}
+if grid=-1 {
+    mp_grid_destroy(grid);
+
+}
+
+
 </string>
           </argument>
         </arguments>
@@ -106,7 +116,7 @@ if path_exists(grouppath) {
             <kind>1</kind>
             <string>///Gui follow screen and pathfinding
                                //is active
-    if path_exists(grouppath) {          //if a destination exists
+    if path_exists(grouppath) &amp;&amp; attack=false {          //if a destination exists
     
 
 //First check to see where on the global path we are and move the point foward if necessary
@@ -148,7 +158,7 @@ if path_exists(grouppath) {
             xxx = x + lengthdir_x(5, direction);
             yyy = y + lengthdir_y(5, direction);
             
-            if collision_circle(xxx,yyy,5,obj_armyleader,false,true) {
+            if collision_circle(xxx,yyy,5,obj_armyleader,false,true) || collision_circle(xxx,yyy,5,obj_enemy,false,true) {
                 if path_exists(grouppath){
                 path_position=path_positionprevious;
                 direction+=5;
@@ -163,59 +173,92 @@ if path_exists(grouppath) {
 }
    
         
-var arc=arc_of_sight(x,y,direction,200,90,obj_enemy,obj_solid);
+var arc;
+if attack=false {
+arc=arc_of_sight(x,y,direction,200,90,obj_enemy,obj_solid);
+}
+else {
+arc=arc_of_sight(x,y,direction,200,160,obj_enemy,obj_solid);
+}
 if arc=noone {
-        if !path_exists(grouppath)&amp;&amp; attack=true {
+        if attack=true {
+            if path_position=1 || !path_exists(attackpath) {
+            attack=false;
+            var pos,posx,posy;
+            if path_get_nearest_pos(grouppath,x,y)!=noone {
+            pos=path_get_nearest_pos(grouppath,x,y);
+            posx=path_get_x(grouppath,pos);
+            posy=path_get_y(grouppath,pos);
+            if mp_grid_path(global.grid,mypath,x,y,posx,posy,true) {
+            mp_grid_path(global.grid,mypath,x,y,posx,posy,true);
+            }
+            pos2=1;
+            x2=path_get_point_x(mypath,pos2); //This gets the x/y coords of the next point on the short path
+            y2=path_get_point_y(mypath,pos2);
+            }
+            if path_exists(attackpath) {
+            path_delete(attackpath);   
+            }
             if !instance_place(dx,dy,obj_waypoint) {
             instance_create(dx,dy,obj_waypoint);
-            }
-            grouppath=path_add();
-            var n, num, inst;   
-            num = instance_number(obj_armyleader);                  
-            for (n=1; n&lt;=num; n++) {
-            inst = instance_nth_nearest(dx,dy,obj_armyleader,n);
-            if (inst.attack==true) {
-            break;
+            global.marker=true;
             }
             }
-            attack=false;
-            mp_grid_path(global.grid,grouppath,inst.x,inst.y,dx,dy,1);
-            pos1=1; //This holds the next point on the global path to move to...
-            x1=path_get_point_x(grouppath,pos1); //This gets the x/y coords of the next point...
-            y1=path_get_point_y(grouppath,pos1);
-            mp_grid_path(global.grid,mypath,x,y,x1,y1,true); //Create the short path...
-            pos2=1;
-            x2=path_get_point_x(mypath,pos2); //This gets the x/y coords of the next point on the short path...
-            y2=path_get_point_y(mypath,pos2);
+        }
+        }
+            
     
-    }
-    }
     else {
     attack=true;
+    var wx,wy,way;
     wx=path_get_x(grouppath,1);
     wy=path_get_y(grouppath,1);
-    with instance_nearest(wx,wy,obj_waypoint) {
+    way=instance_nearest(wx,wy,obj_waypoint) 
+    if point_distance(way.x,way.y,wx,wy)&lt;12 {
+        with (way) {
         instance_destroy();
-    }
-    if path_exists(grouppath) {
-    path_delete(grouppath);
-    path_end();
+        }
     }
     ddx=arc.x;
     ddy=arc.y;
     var xxx, yyy;
     xxx = x + lengthdir_x(5, direction);
     yyy = y + lengthdir_y(5, direction);
-            
-    if !collision_circle(xxx,yyy,5,obj_armyleader,false,true)&amp;&amp;!collision_circle(xxx,yyy,5,arc,false,true) {
-          mp_potential_step_object(ddx,ddy,1,obj_solid);
-    }
-    if collision_circle(xxx,yyy,5,arc,false,true) {
-        (arc).h--;
-        }
     
-              
-            }
+    if !path_exists(attackpath) {
+        attackpath=path_add();
+    }
+    if grid=-1 {
+    grid=mp_grid_create(0,0,room_width/16,room_height/16,16,16); //create grid
+    sx=x;
+    sy=y;
+    }
+    else { 
+     var near;
+     near=instance_nth_nearest(x,y,obj_armyleader,2);
+     mp_grid_add_instances(grid,near,1);
+     mp_grid_add_instances(grid,obj_solid,1);
+     }
+    if collision_circle(xxx,yyy,5,obj_armyleader,false,true) || collision_circle(xxx,yyy,5,obj_enemy,false,true) {
+        path_position=path_positionprevious;
+        direction+=5;
+    }
+    else {
+     if mp_grid_path(grid,attackpath,x,y,ddx,ddy,1) {
+        direction=point_direction(x,y,ddx,ddy);
+        mp_grid_path(grid,attackpath,x,y,ddx,ddy,1);
+        path_start(attackpath,1.5,"",1);
+        }
+  }
+     
+  
+    }
+     if  collision_circle(x,y,10,obj_enemy,0,0) {
+       var op
+       op=instance_nearest(x,y,obj_enemy);
+       op.h--;
+    }
+    
 
 </string>
           </argument>
@@ -244,7 +287,7 @@ x = round(x)   //round to nearest x and y pixel
 y = round(y) //so player doesn't stop between pixels
 move_outside_solid(direction,speed) //moves outside object
 move_contact_solid(direction,speed) //moves to contact right beside the object
-speed=0     //stops player
+ //stops player
 </string>
           </argument>
         </arguments>
@@ -338,11 +381,13 @@ for (n=1; n&lt;=num; n++) {
                     
 dx = mouse_x;                      //set destination cordinates
 dy = mouse_y; 
-
+if attack=true {
+attack=false
+direction=point_direction(x,y,dx,dy);
+}
 if !collision_point(mouse_x,mouse_y,obj_solid,1,1) {           
 if obj_mouse.inside_view=2 {                //if you click inside the commander's view
     if (selected==true) { 
-    mp_grid_clear_cell(self,x,y);
                        //if the minion is selected
     
                     
@@ -441,7 +486,7 @@ global.moveselected=0;
 
 if (selected==true) { //if minion is selected
     if view_current==2 {    //only on commmanders view
-            draw_ellipse(x-5,y-5,x+5,y+5,1)
+            draw_ellipse(x,y,x+5,y+5,1)
         }
     }
 
@@ -450,7 +495,7 @@ if (selected==true) { //if minion is selected
 
 
 
-/*if path_exists(grouppath)  {
+if path_exists(grouppath)  {
     draw_set_colour(c_red);             //draw the minion's path
     draw_path(grouppath,x,y,true);
 }
@@ -458,7 +503,11 @@ if path_exists(mypath) {
     draw_set_colour(c_black);
     draw_path(mypath,x,y,true);
 }
-
+if path_exists(attackpath) {
+    draw_set_colour(c_blue);             //draw the minion's path
+    draw_path(attackpath,x,y,true);
+    draw_set_colour(c_black);   
+}
 
 </string>
           </argument>

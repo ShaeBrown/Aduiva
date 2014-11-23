@@ -3,47 +3,60 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
+  <datafiles number="2" name="datafiles"/>
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprites name="UI">
-      <sprite>sprites\spr_icon_rock</sprite>
-      <sprite>sprites\spr_menu_click_flip</sprite>
-      <sprite>sprites\spr_menu_click</sprite>
-      <sprite>sprites\spr_menu_flip</sprite>
-      <sprite>sprites\spr_menu</sprite>
-      <sprite>sprites\spr_ui_inv</sprite>
-      <sprite>sprites\spr_icon_wood</sprite>
-      <sprite>sprites\spr_select</sprite>
-      <sprite>sprites\spr_select_vertical</sprite>
-      <sprite>sprites\spr_inv_vertical</sprite>
-      <sprite>sprites\spr_ui_furnace</sprite>
-      <sprite>sprites\spr_fire</sprite>
-      <sprite>sprites\spr_icon_potion</sprite>
-      <sprite>sprites\spr_icon_metal</sprite>
+      <sprites name="Background">
+        <sprite>sprites\spr_comm_ui</sprite>
+        <sprite>sprites\spr_ui_furnace</sprite>
+        <sprite>sprites\spr_ui_inv</sprite>
+        <sprite>sprites\spr_gathui</sprite>
+      </sprites>
+      <sprites name="Icons">
+        <sprite>sprites\spr_menu_flip</sprite>
+        <sprite>sprites\spr_menu_click_flip</sprite>
+        <sprite>sprites\spr_icon_potion</sprite>
+        <sprite>sprites\spr_menu</sprite>
+        <sprite>sprites\spr_select_vertical</sprite>
+        <sprite>sprites\spr_select</sprite>
+        <sprite>sprites\spr_icon_wood</sprite>
+        <sprite>sprites\spr_fire</sprite>
+        <sprite>sprites\spr_minion1</sprite>
+        <sprite>sprites\spr_icon_metal</sprite>
+        <sprite>sprites\spr_icon_rock</sprite>
+        <sprite>sprites\spr_menu_click</sprite>
+      </sprites>
     </sprites>
     <sprites name="Gatherer">
-      <sprite>sprites\spr_gatherer_magic_up</sprite>
-      <sprite>sprites\spr_gatherer_magic_left</sprite>
-      <sprite>sprites\spr_gatherer_magic_right</sprite>
-      <sprite>sprites\spr_gatherer_magic_down</sprite>
-      <sprite>sprites\spr_gatherer_walk_up</sprite>
-      <sprite>sprites\spr_gatherer_walk_down</sprite>
-      <sprite>sprites\spr_gatherer_walk_left</sprite>
-      <sprite>sprites\spr_gatherer_walk_right</sprite>
-      <sprite>sprites\spr_gatherer_idle_up</sprite>
-      <sprite>sprites\spr_gatherer_idle_left</sprite>
-      <sprite>sprites\spr_gatherer_idle_down</sprite>
-      <sprite>sprites\spr_gatherer_idle_right</sprite>
-      <sprite>sprites\spr_gatherer_sword_up</sprite>
-      <sprite>sprites\spr_gatherer_sword_left</sprite>
-      <sprite>sprites\spr_gatherer_sword_down</sprite>
-      <sprite>sprites\spr_gatherer_sword_right</sprite>
+      <sprites name="Walk">
+        <sprite>sprites\spr_gatherer_walk_up</sprite>
+        <sprite>sprites\spr_gatherer_walk_down</sprite>
+        <sprite>sprites\spr_gatherer_walk_left</sprite>
+        <sprite>sprites\spr_gatherer_walk_right</sprite>
+      </sprites>
       <sprites name="Sword">
         <sprite>sprites\spr_sword_up</sprite>
         <sprite>sprites\spr_sword_left</sprite>
         <sprite>sprites\spr_sword_right</sprite>
         <sprite>sprites\spr_sword_down</sprite>
+        <sprite>sprites\spr_gatherer_sword_up</sprite>
+        <sprite>sprites\spr_gatherer_sword_left</sprite>
+        <sprite>sprites\spr_gatherer_sword_down</sprite>
+        <sprite>sprites\spr_gatherer_sword_right</sprite>
+      </sprites>
+      <sprites name="Magic">
+        <sprite>sprites\spr_gatherer_magic_left</sprite>
+        <sprite>sprites\spr_gatherer_magic_right</sprite>
+        <sprite>sprites\spr_gatherer_magic_up</sprite>
+        <sprite>sprites\spr_gatherer_magic_down</sprite>
+      </sprites>
+      <sprites name="Idle">
+        <sprite>sprites\spr_gatherer_idle_right</sprite>
+        <sprite>sprites\spr_gatherer_idle_down</sprite>
+        <sprite>sprites\spr_gatherer_idle_up</sprite>
+        <sprite>sprites\spr_gatherer_idle_left</sprite>
       </sprites>
     </sprites>
     <sprites name="Old">
@@ -73,17 +86,84 @@
       <sprite>sprites\spr_gatherer_down</sprite>
     </sprites>
     <sprites name="Enemy">
-      <sprite>sprites\spr_goblin_up</sprite>
-      <sprite>sprites\spr_goblin_right_up</sprite>
-      <sprite>sprites\spr_goblin_left_up</sprite>
-      <sprite>sprites\spr_goblin_right</sprite>
-      <sprite>sprites\spr_goblin_left</sprite>
-      <sprite>sprites\spr_goblin_down_right</sprite>
-      <sprite>sprites\spr_goblin_left_down</sprite>
-      <sprite>sprites\spr_goblin_down</sprite>
+      <sprites name="Walk">
+        <sprite>sprites\spr_goblin_left</sprite>
+        <sprite>sprites\spr_goblin_right</sprite>
+        <sprite>sprites\spr_goblin_right_up</sprite>
+        <sprite>sprites\spr_goblin_left_up</sprite>
+        <sprite>sprites\spr_goblin_down</sprite>
+        <sprite>sprites\spr_goblin_down_right</sprite>
+        <sprite>sprites\spr_goblin_up</sprite>
+        <sprite>sprites\spr_goblin_left_down</sprite>
+      </sprites>
+      <sprites name="Attack">
+        <sprite>sprites\spr_goblin_attack_up</sprite>
+        <sprite>sprites\spr_goblin_attack_right</sprite>
+        <sprite>sprites\spr_goblin_attack_left</sprite>
+        <sprite>sprites\spr_goblin_attack_right_down</sprite>
+        <sprite>sprites\spr_goblin_attack_left_down</sprite>
+        <sprite>sprites\spr_goblin_attack_down</sprite>
+        <sprite>sprites\spr_goblin_attack_right_up</sprite>
+        <sprite>sprites\spr_goblin_attack_left_up</sprite>
+      </sprites>
+      <sprites name="Die">
+        <sprite>sprites\spr_goblin_die_up</sprite>
+        <sprite>sprites\spr_goblin_die_right_up</sprite>
+        <sprite>sprites\spr_goblin_die_left_up</sprite>
+        <sprite>sprites\spr_goblin_die_right</sprite>
+        <sprite>sprites\spr_goblin_die_left</sprite>
+        <sprite>sprites\spr_goblin_die_right_down</sprite>
+        <sprite>sprites\spr_goblin_die_left_down</sprite>
+        <sprite>sprites\spr_goblin_die_down</sprite>
+      </sprites>
+    </sprites>
+    <sprites name="Minions">
+      <sprites name="1">
+        <sprites name="Attack">
+          <sprite>sprites\spr_minion1_attack_left_down</sprite>
+          <sprite>sprites\spr_minion1_attack_left</sprite>
+          <sprite>sprites\spr_minion1_attack_right_up</sprite>
+          <sprite>sprites\spr_minion1_attack_left_up</sprite>
+          <sprite>sprites\spr_minion1_attack_right_down</sprite>
+          <sprite>sprites\spr_minion1_attack_down</sprite>
+          <sprite>sprites\spr_minion1_attack_up</sprite>
+          <sprite>sprites\spr_minion1_attack_right</sprite>
+        </sprites>
+        <sprites name="Die">
+          <sprite>sprites\spr_minion1_die_right_up</sprite>
+          <sprite>sprites\spr_minion1_die_up</sprite>
+          <sprite>sprites\spr_minion1_die_right_down</sprite>
+          <sprite>sprites\spr_minion1_die_right</sprite>
+          <sprite>sprites\spr_minion1_die_left_down</sprite>
+          <sprite>sprites\spr_minion1_die_down</sprite>
+          <sprite>sprites\spr_minion1_die_left_up</sprite>
+          <sprite>sprites\spr_minion1_die_left</sprite>
+        </sprites>
+        <sprites name="Walk">
+          <sprite>sprites\spr_minion1_up</sprite>
+          <sprite>sprites\spr_minion1_right_up</sprite>
+          <sprite>sprites\spr_minion1_right</sprite>
+          <sprite>sprites\spr_minion1_left</sprite>
+          <sprite>sprites\spr_minion1_left_down</sprite>
+          <sprite>sprites\spr_minion1_down</sprite>
+          <sprite>sprites\spri_minion1_right_down</sprite>
+          <sprite>sprites\spr_minion1_left_up</sprite>
+        </sprites>
+      </sprites>
+    </sprites>
+    <sprites name="Structures">
+      <sprite>sprites\spr_barracks</sprite>
+      <sprites name="Barricade">
+        <sprite>sprites\spr_bar_diagonal_left</sprite>
+        <sprite>sprites\spr_bar_diagonal_right</sprite>
+        <sprite>sprites\spr_bar_horizontal</sprite>
+        <sprite>sprites\spr_bar_vertical</sprite>
+      </sprites>
     </sprites>
   </sprites>
-  <backgrounds name="background"/>
+  <backgrounds name="background">
+    <background>background\background0</background>
+  </backgrounds>
   <paths name="paths">
     <path>paths\path0</path>
     <path>paths\path1</path>
@@ -92,7 +172,10 @@
     <script>scripts\path_get_nearest_pos.gml</script>
     <script>scripts\instance_nth_nearest.gml</script>
     <script>scripts\arc_of_sight.gml</script>
+    <script>scripts\blood.gml</script>
+    <script>scripts\sparks.gml</script>
   </scripts>
+  <shaders name="shaders"/>
   <objects name="objects">
     <object>objects\obj_enemy</object>
     <object>objects\obj_gatherer</object>

@@ -38,7 +38,7 @@ yy=window_mouse_get_y();
 friction=0.5        //slowly comes to stop when outside view
 build=0             //build mode active
 inside_view=0       //which view is the mouse in
-wall="x"            //wall orientation
+wall=0           //wall orientation
 global.build=true;         
 </string>
           </argument>
@@ -116,11 +116,9 @@ if inside_view=1 {        //cancel if mouse is not in view 1
 
 
 if mouse_wheel_down() or mouse_wheel_up() {
-    if wall="x" {
-        wall="y"
-    }
-    else {
-        wall="x"
+    wall++
+    if wall&gt;3 {
+    wall=0
     }
 }
     
@@ -221,22 +219,12 @@ if inside_view==2 || inside_view=4 {
             <kind>1</kind>
             <string>///Draw build option
 
-if wall="x" {
     if view_current=1{
         if inside_view=1 {
-            draw_sprite(spr_wall_x,0,mouse_x,mouse_y)
+            draw_sprite(global.wall[wall],0,mouse_x,mouse_y)
         }
     }
-}
 
-if wall="y" {
-    if view_current=1{
-        if inside_view=1 {
-            draw_sprite(spr_wall_y,0,mouse_x,mouse_y)
-       }
-    }
-}
-    
 </string>
           </argument>
         </arguments>

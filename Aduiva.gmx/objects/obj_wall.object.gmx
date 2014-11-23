@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>obj_solid</parentName>
+  <parentName>self</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -25,20 +25,36 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Set orientation
-if obj_mouse.wall="x" {                 //place horizontal wall
-    sprite_index=spr_wall_xx
-    }
-if obj_mouse.wall="y" {                 //place vertical wall
-    sprite_index=spr_wall_yy
-    }
+            <string>///Set orientation  
+if place_free(mouse_x,mouse_y) {
+sprite_index=global.wall[obj_mouse.wall];
+}
 
-global.build=false;
-sprite_collision_mask(spr_wall_x,false,2,0,"","","","","",);
-
-
-enter=0;
 </string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>117</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_snap</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>60</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>60</string>
           </argument>
         </arguments>
       </action>
@@ -60,22 +76,8 @@ enter=0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>enter+=1;
-if enter=10 {
-    global.build=true;
-    enter=0;
-    
-    mp_grid_add_instances(global.grid,self,1);  
-    
-    if sprite_index=spr_wall_xx {
-        sprite_index=spr_wall_x
-        sprite_collision_mask(spr_wall_x, true, 1, 0, 0, 0, 0, 0, 0);
-    }
-    if sprite_index=spr_wall_yy {
-        sprite_index=spr_wall_y
-        sprite_collision_mask(spr_wall_y, true, 1, 0, 0, 0, 0, 0, 0);
-    }
-}
+            <string>
+   
 </string>
           </argument>
         </arguments>

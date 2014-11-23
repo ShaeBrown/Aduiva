@@ -25,15 +25,19 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>h=100;
-
+            <string>///Create variables, randomize path, set sprites
+h=100;
+path_wall=path_add();
 if global.groupsize=0 {
 global.path=global.paths[irandom(array_length_1d(global.paths)-1)]
-path_start(global.path,2,0,1);
+path_start(global.path,1,0,1);
 } 
+
 else {
 path_start(global.path,1,0,1);
 }
+
+
 sprite[0] = spr_goblin_right;
 sprite[1] = spr_goblin_right_up;
 sprite[2] = spr_goblin_down;
@@ -42,6 +46,52 @@ sprite[4] = spr_goblin_left;
 sprite[5] = spr_goblin_left;
 sprite[6] = spr_goblin_left_down
 sprite[7] = spr_goblin_up;
+
+attack[0] = spr_goblin_attack_right;
+attack[1] = spr_goblin_attack_right_up;
+attack[2] = spr_goblin_attack_down;
+attack[3] = spr_goblin_attack_left_up;
+attack[4] = spr_goblin_attack_left;
+attack[5] = spr_goblin_attack_left;
+attack[6] = spr_goblin_attack_left_down
+attack[7] = spr_goblin_attack_up;
+
+die[0] = spr_goblin_die_right;
+die[1] = spr_goblin_die_right_up;
+die[2] = spr_goblin_die_down;
+die[3] = spr_goblin_die_left_up;
+die[4] = spr_goblin_die_left;
+die[5] = spr_goblin_die_left;
+die[6] = spr_goblin_die_left_down
+die[7] = spr_goblin_die_up;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Die
+if part_system_exists(flow)
+part_emitter_destroy(flow, wound);
+instance_destroy();
+
 </string>
           </argument>
         </arguments>
@@ -64,22 +114,80 @@ sprite[7] = spr_goblin_up;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if h=0 {
-    instance_destroy()
-}
-sprite_index = sprite[floor((direction + 22) / 45 mod 8)];
-image_speed=0.5;
+            <string>///Sprites, collisions
+
+
 var xxx, yyy;
     xxx = x + lengthdir_x(5, direction);
     yyy = y + lengthdir_y(5, direction);
-    if collision_circle(xxx,yyy,5,obj_enemy,0,1) || collision_circle(xxx,yyy,5,obj_armyleader,0,1) {
-        path_position=path_positionprevious;
-        direction+=5;
+    if collision_circle(xxx,yyy,5,obj_enemy,0,1) {
+        image_speed=0;
     }
-   if path_position=1 {
-    instance_destroy();
+    
+    else if collision_circle(xxx,yyy,10,obj_armyleader,0,1) {
+        sprite_index=attack[round(direction / 45) mod 8];
+        image_speed=0.5;
     }
+    
+    else {
+        sprite_index=sprite[round(direction / 45) mod 8];
+        image_speed=0.5;
+    }
+    
+   if h=0 {
+    sprite_index=die[round(direction / 45) mod 8];
+    image_speed=0.2;
+    if image_index&gt;image_number-1 {
+        blood(x,y);
+        if alarm[2]=-1 {
+        alarm[2]=10;
+        }
+    }
+}
 
+   if path_position=1 {
+    sprite_index=die[round(direction / 45) mod 8];
+    image_speed=0.2;
+    if image_index&gt;image_number-1 {
+        if alarm[2]=-1 {
+        blood(x,y);
+        alarm[2]=10;
+        }
+    }
+}
+    
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Pathfinding
+var arc;
+arc=arc_of_sight(x,y,direction,200,90,obj_wall,obj_solid);
+if arc!=noone {
+    if !path_exists(path_wall) {
+        path_end();
+        mp_grid_path(global.grid,path_wall,x,y,arc.x,arc.y,1);
+        path_start(path_wall,1,0,1);
+    }
+}
+    
 </string>
           </argument>
         </arguments>

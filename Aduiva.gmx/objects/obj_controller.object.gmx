@@ -41,6 +41,12 @@ global.count=0;
 global.dx=0
 global.dy=0
 global.selection="inv";
+
+
+global.wall[0]=spr_bar_vertical
+global.wall[1]=spr_bar_diagonal_right
+global.wall[2]=spr_bar_horizontal
+global.wall[3]=spr_bar_diagonal_left
 </string>
           </argument>
         </arguments>
@@ -63,10 +69,11 @@ global.selection="inv";
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if global.count&gt;0 {
-    instance_create(obj_commanderhut.x,obj_commanderhut.y + 20,obj_armyleader);
+            <string>///Spawn minions
+if global.count&gt;0 {
+    instance_create(obj_commanderhut.x-20,obj_commanderhut.y + 60,obj_armyleader);
     global.count--
-    alarm[1]=30;
+    alarm[1]=60;
 }
 else {
     global.dx=0
@@ -276,22 +283,22 @@ var i;
             <string>///Draw Comm &amp;&amp; Gath UI
 if (view_current=2)  {
     if global.commui=true {
-        draw_set_alpha(0.1);
-        draw_rectangle_color(view_xview[2],view_yview[2],view_xview[2]+640,view_yview[2]+100,c_black,c_black,c_black,c_black,0); //draw armycount gui
+        draw_set_alpha(0.8);
+        draw_sprite(spr_comm_ui,0,view_xview[2],view_yview[2]); //draw armycount gui
         draw_set_alpha(1);     
 }
 }
 
 if global.gathshowinv=1 {
     if (view_current==0) {
+        draw_set_alpha(0.7)
+        draw_sprite(spr_gathui,0,view_xview[0],view_yview[0]);
+        draw_set_alpha(1);
         draw_set_halign ( fa_left )
         for (var i=0;i+1&lt;=array_height_2d(global.gathinv);i++) {
             draw_sprite_stretched(global.gathinv[i,0],0,view_xview[0]+10,view_yview[0]+25+i*30,32,32)
             draw_text(view_xview[0]+60,view_yview[0]+25+i*32,global.gathinv[i,1])
         }
-        draw_set_alpha(0.1)
-        draw_rectangle_colour(view_xview[0],view_yview[0],view_xview[0]+100,view_yview[0]+view_hview[0],"","","","",0);
-        draw_set_alpha(1);
     }
 }
 

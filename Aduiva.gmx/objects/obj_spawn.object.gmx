@@ -62,7 +62,7 @@ else {
     global.groupsize--;
     alarm[0]=30;
 }
-instance_create(x,y-20,obj_enemy);
+instance_create(432,1808,obj_enemy);
 
 
 </string>

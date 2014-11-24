@@ -25,8 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>mp_grid_clear_rectangle(global.grid,x-sprite_width/2,y-sprite_height/2,x+sprite_width/2,y+sprite_height/2);
-</string>
+            <string></string>
           </argument>
         </arguments>
       </action>

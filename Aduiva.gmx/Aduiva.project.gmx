@@ -146,7 +146,7 @@
           <sprite>sprites\spr_minion1_left</sprite>
           <sprite>sprites\spr_minion1_left_down</sprite>
           <sprite>sprites\spr_minion1_down</sprite>
-          <sprite>sprites\spri_minion1_right_down</sprite>
+          <sprite>sprites\spr_minion1_right_down</sprite>
           <sprite>sprites\spr_minion1_left_up</sprite>
         </sprites>
       </sprites>
@@ -159,14 +159,16 @@
         <sprite>sprites\spr_bar_horizontal</sprite>
         <sprite>sprites\spr_bar_vertical</sprite>
       </sprites>
+      <sprite>sprites\spr_crystal</sprite>
+      <sprite>sprites\spr_crafter</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
   </backgrounds>
   <paths name="paths">
-    <path>paths\path0</path>
     <path>paths\path1</path>
+    <path>paths\path0</path>
   </paths>
   <scripts name="scripts">
     <script>scripts\path_get_nearest_pos.gml</script>
@@ -174,8 +176,9 @@
     <script>scripts\arc_of_sight.gml</script>
     <script>scripts\blood.gml</script>
     <script>scripts\sparks.gml</script>
+    <script>scripts\sparks_crystal.gml</script>
+    <script>scripts\move_snap_isometric.gml</script>
   </scripts>
-  <shaders name="shaders"/>
   <objects name="objects">
     <object>objects\obj_enemy</object>
     <object>objects\obj_gatherer</object>
@@ -199,6 +202,8 @@
     <object>objects\obj_armygui</object>
     <object>objects\obj_window</object>
     <object>objects\obj_spawn</object>
+    <object>objects\obj_crystal</object>
+    <object>objects\obj_soul</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room_1</room>

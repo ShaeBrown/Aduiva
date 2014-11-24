@@ -25,46 +25,126 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Create variables, randomize path, set sprites
+            <string>///Create variables, set sprites
 h=100;
-path_wall=path_add();
-if global.groupsize=0 {
-global.path=global.paths[irandom(array_length_1d(global.paths)-1)]
-path_start(global.path,1,0,1);
-} 
-
-else {
-path_start(global.path,1,0,1);
-}
-
 
 sprite[0] = spr_goblin_right;
 sprite[1] = spr_goblin_right_up;
-sprite[2] = spr_goblin_down;
+sprite[2] = spr_goblin_up;
 sprite[3] = spr_goblin_left_up;
 sprite[4] = spr_goblin_left;
-sprite[5] = spr_goblin_left;
-sprite[6] = spr_goblin_left_down
-sprite[7] = spr_goblin_up;
+sprite[5] = spr_goblin_left_down;
+sprite[6] = spr_goblin_down
+sprite[7] = spr_goblin_down_right;
 
 attack[0] = spr_goblin_attack_right;
 attack[1] = spr_goblin_attack_right_up;
-attack[2] = spr_goblin_attack_down;
+attack[2] = spr_goblin_attack_up;
 attack[3] = spr_goblin_attack_left_up;
 attack[4] = spr_goblin_attack_left;
-attack[5] = spr_goblin_attack_left;
-attack[6] = spr_goblin_attack_left_down
-attack[7] = spr_goblin_attack_up;
+attack[5] = spr_goblin_attack_left_down;
+attack[6] = spr_goblin_attack_down
+attack[7] = spr_goblin_attack_right_down;
 
 die[0] = spr_goblin_die_right;
 die[1] = spr_goblin_die_right_up;
-die[2] = spr_goblin_die_down;
+die[2] = spr_goblin_die_up;
 die[3] = spr_goblin_die_left_up;
 die[4] = spr_goblin_die_left;
-die[5] = spr_goblin_die_left;
-die[6] = spr_goblin_die_left_down
-die[7] = spr_goblin_die_up;
+die[5] = spr_goblin_die_left_down;
+die[6] = spr_goblin_die_down
+die[7] = spr_goblin_die_right_down;
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Create path
+grouppath=path_add();
+finalpath=path_add();
+if global.groupsize=0 {
+global.path=global.paths[irandom(array_length_1d(global.paths)-1)]
+grouppath=global.path
+path_start(grouppath,1,0,0);
+} 
+
+else {
+grouppath=global.path
+path_start(grouppath,1,0,0);
+}
+grid=-1;
+rot=true;
+path_wall=path_add();
+attackpath=path_add();
+blocked=false;
+done=false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if part_system_exists(flow)
+part_emitter_destroy(flow, wound);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+var xx, yy;
+xx = x + lengthdir_x(5, direction);
+yy = y + lengthdir_y(5, direction);
+sparks_crystal(xx,yy);
 </string>
           </argument>
         </arguments>
@@ -97,6 +177,33 @@ instance_destroy();
         </arguments>
       </action>
     </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Hit wood
+var xx, yy;
+xx = x + lengthdir_x(5, direction);
+yy = y + lengthdir_y(5, direction);
+sparks(xx,yy);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -120,41 +227,61 @@ instance_destroy();
 var xxx, yyy;
     xxx = x + lengthdir_x(5, direction);
     yyy = y + lengthdir_y(5, direction);
-    if collision_circle(xxx,yyy,5,obj_enemy,0,1) {
+    if collision_circle(xxx,yyy,5,obj_enemy,1,1) {
+        path_position=path_positionprevious;
         image_speed=0;
+        rot=false;
+        direction+=5;
     }
     
-    else if collision_circle(xxx,yyy,10,obj_armyleader,0,1) {
+    else if collision_circle(x,y,20,obj_armyleader,0,1) {
+        path_position=path_positionprevious;
+        path_end();
+        var op;
+        op=instance_nearest(x,y,obj_armyleader);
+        if op.h&gt;0 {
+            op.h--;
+        }
         sprite_index=attack[round(direction / 45) mod 8];
-        image_speed=0.5;
+        image_speed=0.2;
+        direction=point_direction(x,y,op.x,op.y);
+    }
+    else if collision_circle(xxx,yyy,5,obj_wall,false,true) {
+         sprite_index=attack[round(direction / 45) mod 8];
+         image_speed=0.5;
+    }
+    else if collision_circle(xxx,yyy,5,obj_crystal,false,true) {
+         sprite_index=attack[round(direction / 45) mod 8];
+         image_speed=0.5;
+         if obj_crystal.h&gt;0 {
+         obj_crystal.h--;
+         }
+         if alarm[3]=-1 {
+            alarm[3]=10;
+         }
     }
     
     else {
+        if rot=true {
         sprite_index=sprite[round(direction / 45) mod 8];
+        }
         image_speed=0.5;
-    }
+        path_speed=1
+        rot=true;
+        }
+    
     
    if h=0 {
     sprite_index=die[round(direction / 45) mod 8];
     image_speed=0.2;
     if image_index&gt;image_number-1 {
-        blood(x,y);
         if alarm[2]=-1 {
         alarm[2]=10;
+        blood(x,y);
         }
     }
 }
 
-   if path_position=1 {
-    sprite_index=die[round(direction / 45) mod 8];
-    image_speed=0.2;
-    if image_index&gt;image_number-1 {
-        if alarm[2]=-1 {
-        blood(x,y);
-        alarm[2]=10;
-        }
-    }
-}
     
 
 </string>
@@ -178,16 +305,211 @@ var xxx, yyy;
           <argument>
             <kind>1</kind>
             <string>///Pathfinding
-var arc;
-arc=arc_of_sight(x,y,direction,200,90,obj_wall,obj_solid);
-if arc!=noone {
-    if !path_exists(path_wall) {
-        path_end();
-        mp_grid_path(global.grid,path_wall,x,y,arc.x,arc.y,1);
-        path_start(path_wall,1,0,1);
+var arce,xx,yy,inst,arcw
+var xxx, yyy;
+xxx = x + lengthdir_x(5, direction);
+yyy = y + lengthdir_y(5, direction);
+arce=arc_of_sight(x,y,direction,200,90,obj_armyleader,obj_solid);
+arcw=arc_of_sight(x,y,direction,200,90,obj_wall,obj_solid);
+if path_position=1 &amp;&amp; path_get_name(path_index)=grouppath {
+    path_end();
+    if done=false {
+        done=true
     }
 }
+if done=true {
+    if !path_exists(finalpath) {
+        finalpath=path_add();
+    }
+    if mp_grid_path(global.grid,finalpath,x,y,obj_crystal.x,obj_crystal.y,1) {
+        if path_exists(attackpath) {
+            path_delete(attackpath);
+        }
+         if path_exists(path_wall) {
+            path_delete(path_wall);
+        }
+        blocked=false;
+    }
+    else {
+        direction=point_direction(x,y,obj_crystal.x,obj_crystal.y);
+        blocked=true;
+        if path_exists(finalpath) {
+            path_delete(finalpath);
+        }
+    }
+}
+
+if blocked=false &amp;&amp; done=true {
+if grid=-1 {
+grid=mp_grid_create(0,0,room_width/16,room_height/16,16,16); //create grid
+}
+else {
+if path_exists(attackpath) {
+            path_delete(attackpath);
+        }
+         if path_exists(path_wall) {
+            path_delete(path_wall);
+        }
+mp_grid_clear_all(grid); 
+var near1,near2,near3;
+near1=instance_nth_nearest(x,y,obj_enemy,2);
+near2=instance_nth_nearest(x,y,obj_enemy,3);
+near3=instance_nth_nearest(x,y,obj_armyleader,1);
+mp_grid_add_instances(grid,near1,1);
+mp_grid_add_instances(grid,near2,1);
+mp_grid_add_instances(grid,near3,1);
+mp_grid_add_instances(grid,obj_solid,1);
+mp_grid_add_instances(grid,obj_wall,1);
+  if !path_exists(finalpath) {
+        finalpath=path_add();
+  }
+
+mp_grid_path(grid,finalpath,x,y,obj_crystal.x,obj_crystal.y,1)
+path_start(finalpath,1.5,0,1);
+
+
+
+}
+}
+if done=true &amp;&amp; blocked=true {
+  if path_exists(finalpath) {
+  path_delete(finalpath);
+  }
+
+if arce!=noone {
+    ddx=arce.x;
+    ddy=arce.y;
+    if !path_exists(attackpath) {
+        attackpath=path_add();
+    }
+    if grid=-1 {
+    grid=mp_grid_create(0,0,room_width/16,room_height/16,16,16); //create grid
+    }
+    else { 
+     var near;
+     near=instance_nth_nearest(x,y,obj_enemy,2);
+     mp_grid_clear_all(grid); 
+     mp_grid_add_instances(grid,near,1);
+     mp_grid_add_instances(grid,obj_solid,1);
+     mp_grid_add_instances(grid,obj_wall,1);
+     }
+     direction=point_direction(x,y,ddx,ddy);
+     mp_grid_path(grid,attackpath,x,y,ddx,ddy,1);
+     path_start(attackpath,1.5,"",1);
+     rot=true;
+  }
+
     
+else if arcw!=noone {
+      if path_exists(finalpath) {
+            path_delete(finalpath);
+        }
+    if path_exists(attackpath) {
+        path_delete(attackpath);
+        }
+    if !path_exists(path_wall) {
+        path_wall=path_add()
+        }
+        if grid=-1 {
+        grid=mp_grid_create(0,0,room_width/16,room_height/16,16,16);
+        }
+        mp_grid_clear_all(grid); 
+        mp_grid_add_instances(grid,obj_solid,1);
+        var near;
+        near=instance_nth_nearest(x,y,obj_enemy,2);
+        mp_grid_add_instances(grid,near,1);
+        if !collision_circle(xxx,yyy,5,obj_wall,false,true) {
+        mp_grid_path(grid,path_wall,x,y,arcw.x,arcw.y,1);
+        path_start(path_wall,1,0,1);
+        rot=true;
+        } 
+}
+}
+
+           
+if collision_circle(xxx,yyy,5,obj_wall,false,true) {
+    if path_exists(path_wall) {
+        path_delete(path_wall);
+    }
+    if grid!=-1 {
+    mp_grid_destroy(grid);
+    grid=-1;
+    }
+    inst=instance_nearest(x,y,obj_wall);
+    direction=point_direction(x,y,inst.x,inst.y)
+    inst.h--;
+    if alarm[1]=-1 {
+        alarm[1]=30;
+    }
+}
+
+
+if done=false {
+if arce!=noone {
+    ddx=arce.x;
+    ddy=arce.y;
+    if !path_exists(attackpath) {
+        attackpath=path_add();
+    }
+    if grid=-1 {
+    grid=mp_grid_create(0,0,room_width/16,room_height/16,16,16); //create grid
+    }
+    else { 
+     var near;
+     near=instance_nth_nearest(x,y,obj_enemy,2);
+     mp_grid_add_instances(grid,near,1);
+     mp_grid_add_instances(grid,obj_solid,1);
+     }
+
+        direction=point_direction(x,y,ddx,ddy);
+        mp_grid_path(grid,attackpath,x,y,ddx,ddy,1);
+        path_start(attackpath,1.5,"",1);
+        rot=true;
+}
+}
+if collision_circle(xxx,yyy,5,obj_crystal,false,true) {
+    path_end();
+    if path_exists(finalpath) {
+        path_delete(finalpath)
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_self();
+if path_exists(grouppath)  {
+    draw_set_colour(c_white);             //draw the minion's path
+    draw_path(grouppath,x,y,true);
+}
+if path_exists(finalpath)  {
+    draw_set_colour(c_red);             //draw the minion's path
+    draw_path(finalpath,x,y,true);
+}
+if path_exists(path_wall)  {
+    draw_set_colour(c_blue);             //draw the minion's path
+    draw_path(path_wall,x,y,true);
+}
+
+
 </string>
           </argument>
         </arguments>

@@ -26,25 +26,35 @@
           <argument>
             <kind>1</kind>
             <string>///Sprite arrays
+global.diesprite=noone;
 level=1
 rot=true;
 minion[0] = spr_minion1_right;
 minion[1] = spr_minion1_right_up;
-minion[2] = spr_minion1_down;
+minion[2] = spr_minion1_up;
 minion[3] = spr_minion1_left_up;
 minion[4] = spr_minion1_left;
-minion[5] = spr_minion1_left;
-minion[6] = spr_minion1_left_down
-minion[7] = spr_minion1_up;
+minion[5] = spr_minion1_left_down
+minion[6] = spr_minion1_up;
+minion[7] = spr_minion1_right_down;
 
 miniona[0] = spr_minion1_attack_right;
 miniona[1] = spr_minion1_attack_right_up;
-miniona[2] = spr_minion1_attack_down;
+miniona[2] = spr_minion1_attack_up;
 miniona[3] = spr_minion1_attack_left_up;
 miniona[4] = spr_minion1_attack_left;
-miniona[5] = spr_minion1_attack_left;
-miniona[6] = spr_minion1_attack_left_down
-miniona[7] = spr_minion1_attack_up;
+miniona[5] = spr_minion1_attack_left_down;
+miniona[6] = spr_minion1_attack_up
+miniona[7] = spr_minion1_attack_right_down;
+
+miniond[0] = spr_minion1_die_right;
+miniond[1] = spr_minion1_die_right_up;
+miniond[2] = spr_minion1_die_up;
+miniond[3] = spr_minion1_die_left_up;
+miniond[4] = spr_minion1_die_left;
+miniond[5] = spr_minion1_die_left_down;
+miniond[6] = spr_minion1_die_up
+miniond[7] = spr_minion1_die_right_down;
 
 
 </string>
@@ -68,6 +78,7 @@ miniona[7] = spr_minion1_attack_up;
           <argument>
             <kind>1</kind>
             <string>///Create grid, path, and variables
+h=100;
 selected=false;    //is the player selected 
 xx=0;             //variable used for x/y cordinates
 yy=0;
@@ -139,6 +150,35 @@ if grid=-1 {
         </arguments>
       </action>
     </event>
+    <event eventtype="2" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Die
+if part_system_exists(flow)
+part_emitter_destroy(flow, wound);
+global.diesprite=sprite_index;
+instance_create(x,y,obj_soul);
+instance_destroy();
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="2" enumb="2">
       <action>
         <libid>1</libid>
@@ -185,21 +225,34 @@ rot=true;
   xxx = x + lengthdir_x(10, direction);
   yyy = y + lengthdir_y(10, direction);
             
-if  collision_circle(x,y,10,obj_enemy,0,0) {
+if  collision_circle(x,y,20,obj_enemy,0,0) {
     path_position=path_positionprevious;
+    path_end();
        var op
        op=instance_nearest(x,y,obj_enemy);
-       with (op) {
-       h--;
+       direction=point_direction(x,y,op.x,op.y);
+       if op.h&gt;0 {
+       op.h--;
        }
        sprite_index=miniona[round(direction / 45) mod 8];
-       image_speed=0.5;
+       image_speed=0.2;
 }
 else {
     if rot=true {
         sprite_index=minion[round(direction / 45) mod 8];
+        image_speed=0.5;
     }
-    else sprite_index=sprite_index;
+
+}
+if h=0 {
+    sprite_index=miniond[round(direction / 45) mod 8];
+    image_speed=0.2;
+    if image_index&gt;image_number-1 {
+        if alarm[3]=-1 {
+        alarm[3]=10;
+        blood(x,y);
+        }
+    }
 }
 </string>
           </argument>
@@ -346,25 +399,34 @@ if arc=noone {
     }
     if grid=-1 {
     grid=mp_grid_create(0,0,room_width/16,room_height/16,16,16); //create grid
-    sx=x;
-    sy=y;
     }
     else { 
-     var near;
-     near=instance_nth_nearest(x,y,obj_armyleader,2);
-     mp_grid_add_instances(grid,near,1);
+    mp_grid_clear_all(grid);
+     var near1, near2;
+     near1=instance_nth_nearest(x,y,obj_armyleader,2);
+     near2=instance_nth_nearest(x,y,obj_armyleader,3);
+     mp_grid_add_instances(grid,near1,1);
+     mp_grid_add_instances(grid,near2,1);
      mp_grid_add_instances(grid,obj_solid,1);
+     mp_grid_add_instances(grid,obj_wall,1);
+     
      }
-    if collision_circle(xxx,yyy,10,obj_armyleader,false,true) || collision_circle(xxx,yyy,10,obj_enemy,false,true) {
-        path_position=path_positionprevious;
+    if collision_circle(xxx,yyy,10,obj_armyleader,false,true) {
         image_speed=0;
+        path_position=path_positionprevious;
+        path_end();
+        direction+=5;
+        rot=false;
     }
     else {
+    if  !collision_circle(x,y,20,obj_enemy,0,0) {
      if mp_grid_path(grid,attackpath,x,y,ddx,ddy,1) {
         direction=point_direction(x,y,ddx,ddy);
         mp_grid_path(grid,attackpath,x,y,ddx,ddy,1);
         path_start(attackpath,1.5,"",1);
         image_speed=1;
+        rot=true;
+        }
         }
   }
      
@@ -580,10 +642,6 @@ draw_self();
 }
 
              
-if path_exists(grouppath)  {
-    draw_set_colour(c_white);             //draw the minion's path
-    draw_path(grouppath,x,y,true);
-}
 
             
 </string>

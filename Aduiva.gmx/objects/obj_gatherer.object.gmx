@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Create variables
+h=10000;
 friction=0.5 //the friction is essential to stop the motion added the player and makes a more natural looking stop
 move=1       //1 is true, 0 is false. Is the player allowed to move? Used to diable movement controls when attacking or during a tutorial etc.
 dir=270      //set by the movement keys, starts facing down
@@ -37,7 +38,8 @@ global.gathinv[0,1]=0;
 global.gathshowinv=false;
 global.gathinv[1,0]=spr_icon_rock
 global.gathinv[1,1]=0;
-
+global.gathinv[2,0]=spr_soul_icon
+global.gathinv[2,1]=0;
 
 
 </string>
@@ -160,6 +162,32 @@ if dir=270 then {sprite_index=spr_gatherer_sword_down}
         </arguments>
       </action>
     </event>
+    <event eventtype="4" ename="obj_soul">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>global.gathinv[2,1]++;
+with (other) {
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="4" ename="obj_solid">
       <action>
         <libid>1</libid>
@@ -212,6 +240,62 @@ speed=0     //stops player
         event_perform(ev_alarm,0);
     }
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="obj_enemy">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Stop
+x = round(x)   //round to nearest x and y pixel
+y = round(y) //so player doesn't stop between pixels
+move_outside_solid(direction,speed) //moves outside object
+move_contact_solid(direction,speed) //moves to contact right beside the object
+speed=0     //stops player
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="obj_armyleader">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Stop
+x = round(x)   //round to nearest x and y pixel
+y = round(y) //so player doesn't stop between pixels
+move_outside_solid(direction,speed) //moves outside object
+move_contact_solid(direction,speed) //moves to contact right beside the object
+speed=0     //stops player
 </string>
           </argument>
         </arguments>

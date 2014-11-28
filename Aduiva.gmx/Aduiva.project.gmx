@@ -4,8 +4,12 @@
     <Config>Configs\Default</Config>
   </Configs>
   <datafiles number="2" name="datafiles"/>
-  <NewExtensions/>
-  <sounds name="sound"/>
+  <NewExtensions>
+    <extension index="0">extensions\Caster</extension>
+  </NewExtensions>
+  <sounds name="sound">
+    <sound>sound\theme</sound>
+  </sounds>
   <sprites name="sprites">
     <sprites name="UI">
       <sprites name="Background">
@@ -13,6 +17,7 @@
         <sprite>sprites\spr_ui_furnace</sprite>
         <sprite>sprites\spr_ui_inv</sprite>
         <sprite>sprites\spr_gathui</sprite>
+        <sprite>sprites\spr_workbench_ui</sprite>
       </sprites>
       <sprites name="Icons">
         <sprite>sprites\spr_menu_flip</sprite>
@@ -27,6 +32,13 @@
         <sprite>sprites\spr_icon_metal</sprite>
         <sprite>sprites\spr_icon_rock</sprite>
         <sprite>sprites\spr_menu_click</sprite>
+        <sprite>sprites\spr_barricade_icon</sprite>
+        <sprite>sprites\spr_plank</sprite>
+        <sprite>sprites\spr_spikes_icon</sprite>
+        <sprite>sprites\spr_spear</sprite>
+        <sprite>sprites\spr_soul_icon</sprite>
+        <sprite>sprites\spr_craft</sprite>
+        <sprite>sprites\spr_craft_select</sprite>
       </sprites>
     </sprites>
     <sprites name="Gatherer">
@@ -161,49 +173,62 @@
       </sprites>
       <sprite>sprites\spr_crystal</sprite>
       <sprite>sprites\spr_crafter</sprite>
+      <sprite>sprites\spr_spikes</sprite>
+      <sprite>sprites\spr_tower_right_down</sprite>
+      <sprite>sprites\spr_tower_icon</sprite>
+    </sprites>
+    <sprites name="Crafting Objects">
+      <sprite>sprites\spr_furnace_1</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
   </backgrounds>
   <paths name="paths">
-    <path>paths\path1</path>
     <path>paths\path0</path>
   </paths>
   <scripts name="scripts">
-    <script>scripts\path_get_nearest_pos.gml</script>
     <script>scripts\instance_nth_nearest.gml</script>
     <script>scripts\arc_of_sight.gml</script>
     <script>scripts\blood.gml</script>
     <script>scripts\sparks.gml</script>
     <script>scripts\sparks_crystal.gml</script>
     <script>scripts\move_snap_isometric.gml</script>
+    <script>scripts\path_get_nearest_point.gml</script>
   </scripts>
   <objects name="objects">
-    <object>objects\obj_enemy</object>
-    <object>objects\obj_gatherer</object>
-    <object>objects\obj_crafter</object>
-    <object>objects\obj_tree</object>
-    <object>objects\obj_metal</object>
-    <object>objects\obj_sword</object>
-    <object>objects\obj_mouse</object>
-    <object>objects\obj_waypoint</object>
-    <object>objects\obj_controller</object>
-    <object>objects\obj_wall</object>
-    <object>objects\obj_commanderhut</object>
-    <object>objects\obj_crafterhut</object>
-    <object>objects\obj_solid</object>
-    <object>objects\obj_intruction_controller</object>
-    <object>objects\obj_furnace</object>
-    <object>objects\obj_saw</object>
-    <object>objects\obj_comui</object>
-    <object>objects\object19</object>
-    <object>objects\obj_armyleader</object>
-    <object>objects\obj_armygui</object>
-    <object>objects\obj_window</object>
-    <object>objects\obj_spawn</object>
-    <object>objects\obj_crystal</object>
-    <object>objects\obj_soul</object>
+    <objects name="Characters">
+      <object>objects\obj_armyleader</object>
+      <object>objects\obj_sword</object>
+      <object>objects\obj_gatherer</object>
+      <object>objects\obj_crafter</object>
+      <object>objects\obj_enemy</object>
+    </objects>
+    <objects name="Structures">
+      <object>objects\obj_crystal</object>
+      <object>objects\obj_spawn</object>
+      <object>objects\obj_commanderhut</object>
+      <object>objects\obj_crafterhut</object>
+      <object>objects\obj_wall</object>
+    </objects>
+    <objects name="Interactive">
+      <object>objects\obj_workbench</object>
+      <object>objects\obj_furnace</object>
+      <object>objects\obj_window</object>
+      <object>objects\obj_tree</object>
+      <object>objects\obj_metal</object>
+      <object>objects\obj_solid</object>
+      <object>objects\obj_soul</object>
+    </objects>
+    <objects name="Controller">
+      <object>objects\obj_mouse</object>
+      <object>objects\obj_comui</object>
+      <object>objects\obj_intruction_controller</object>
+      <object>objects\obj_armygui</object>
+      <object>objects\obj_waypoint</object>
+      <object>objects\object19</object>
+      <object>objects\obj_controller</object>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\room_1</room>

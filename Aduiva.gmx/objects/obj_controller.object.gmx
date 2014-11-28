@@ -204,13 +204,35 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>alarm[1]=1;
-</string>
+            <string></string>
           </argument>
         </arguments>
       </action>
     </event>
     <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Play sound
+caster_loop(caster_load(working_directory+"sound\audio\theme.ogg"), 1, 1);
+
+</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -286,18 +308,18 @@ if (view_current=2)  {
         draw_set_alpha(0.8);
         draw_sprite(spr_comm_ui,0,view_xview[2],view_yview[2]); //draw armycount gui
         draw_set_alpha(1);     
-}
+    }
 }
 
 if global.gathshowinv=1 {
     if (view_current==0) {
         draw_set_alpha(0.7)
-        draw_sprite(spr_gathui,0,view_xview[0],view_yview[0]);
+        draw_sprite(spr_comm_ui,0,view_xview[0],view_yview[0]+view_hview[0]-100);
         draw_set_alpha(1);
         draw_set_halign ( fa_left )
         for (var i=0;i+1&lt;=array_height_2d(global.gathinv);i++) {
-            draw_sprite_stretched(global.gathinv[i,0],0,view_xview[0]+10,view_yview[0]+25+i*30,32,32)
-            draw_text(view_xview[0]+60,view_yview[0]+25+i*32,global.gathinv[i,1])
+            draw_sprite_stretched(global.gathinv[i,0],0,view_xview[0]+25+i*60,view_yview[0]+view_hview[0]-60,32,32)
+            draw_text_color(view_xview[0]+50+i*60,view_yview[0]+view_hview[0]-30,global.gathinv[i,1],c_white,c_white,c_white,c_black,1);
         }
     }
 }
@@ -323,6 +345,9 @@ if transfer=true {
         transfer=false;
     }
 }
+if view_current==0 {
+    draw_healthbar(view_xview[0]+25,view_yview[0]+25,view_xview[0]+view_wview[0]-25,view_yview[0]+30,(obj_gatherer.h/10000)*100,"",c_red,c_green,0,0,1);
+    }
 </string>
           </argument>
         </arguments>
@@ -460,6 +485,130 @@ if global.invui=true {
     
 }
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Workbench UI
+if global.workui=true {
+    draw_set_halign ( fa_right );
+    draw_enable_alphablend(false);
+    draw_sprite(spr_workbench_ui,0,view_xview[3],view_yview[3]);
+    draw_enable_alphablend(true);
+    if global.selection="choose" {
+    draw_sprite(spr_craft,0,view_xview[3]+374,view_yview[3]+395)
+    }
+    
+    var spaceh,spacev,height,length,indentv,indenth,dif;
+    indenth=14;
+    indentv=14;
+    spaceh=55;
+    spacev=52;
+    length=4;
+    height=9;
+    dif=36;
+    for (var i=0;i&lt;9;i++) {
+        for (var j=0;j&lt;4;j++) {
+            if global.crafamount[#i,j]&gt;0 {
+                draw_sprite_stretched(global.crafitem[#i,j],0,view_xview[3]+indenth+j*spaceh,view_yview[3]+indentv+i*spacev,32,32)
+                draw_text_colour(view_xview[3]+indenth+dif+j*spaceh,view_yview[3]+indentv+dif-8+i*spacev,global.crafamount[#i,j],c_white,c_white,c_white,"",1); 
+            }
+        }
+    }
+    
+    for (var i=0;i&lt;5;i++) {
+                draw_sprite(global.workbench[i],0,view_xview[3]+274+i*67,view_yview[3]+136)
+            
+        }
+    if global.selection="choose" {
+    if global.selectx&gt;-1 {
+    draw_sprite(spr_select,0,view_xview[3]+274+global.selectx*67,view_yview[3]+136);
+    draw_set_halign ( fa_left );
+    draw_text(view_xview[3]+390,view_yview[3]+405,global.total);
+    }
+    }
+    if global.selection="craft" {
+         draw_sprite(spr_craft_select,0,view_xview[3]+374,view_yview[3]+395);
+         draw_set_halign ( fa_left );
+         draw_text(view_xview[3]+390,view_yview[3]+405,global.amount);
+    }
+    
+    if global.selectx=0 {
+        if obj_crafter.total1&gt;0 {
+        draw_sprite(spr_spear,0,view_xview[3]+365,view_yview[3]+270);
+        draw_text_color(view_xview[3]+405,view_yview[3]+310,5,c_white,c_white,c_white,c_black,1);
+        }
+        else {
+        draw_sprite_ext(spr_spear,0,view_xview[3]+365,view_yview[3]+270,image_xscale,image_yscale,0,c_black,1);
+        draw_text_color(view_xview[3]+405,view_yview[3]+310,5,c_black,c_black,c_black,c_white,1);
+        }
+        if obj_crafter.total2&gt;0 {
+        draw_sprite(spr_plank,0,view_xview[3]+440,view_yview[3]+270);
+        draw_text_color(view_xview[3]+500,view_yview[3]+310,1,c_white,c_white,c_white,c_black,1);
+        }
+        else {
+        draw_sprite_ext(spr_plank,0,view_xview[3]+440,view_yview[3]+270,image_xscale,image_yscale,0,c_black,1);
+        draw_text_color(view_xview[3]+500,view_yview[3]+310,1,c_black,c_black,c_black,c_gray,1);
+        }  
+    }
+    if global.selectx=1 {
+        if obj_crafter.total1&gt;0 {
+        draw_sprite(spr_icon_wood,0,view_xview[3]+400,view_yview[3]+270);
+        draw_text_color(view_xview[3]+450,view_yview[3]+310,1,c_white,c_white,c_white,c_black,1);
+        }
+        else {
+        draw_sprite_ext(spr_icon_wood,0,view_xview[3]+400,view_yview[3]+270,image_xscale,image_yscale,0,c_black,1);
+        draw_text_color(view_xview[3]+450,view_yview[3]+310,1,c_black,c_black,c_black,c_gray,1);
+        }
+    }
+    if global.selectx=2 {
+        if obj_crafter.total1&gt;0 {
+        draw_sprite(spr_icon_wood,0,view_xview[3]+400,view_yview[3]+270);
+        draw_text_color(view_xview[3]+450,view_yview[3]+310,5,c_white,c_white,c_white,c_black,1);
+        }
+        else {
+        draw_sprite_ext(spr_icon_wood,0,view_xview[3]+400,view_yview[3]+270,image_xscale,image_yscale,0,c_black,1);
+        draw_text_color(view_xview[3]+450,view_yview[3]+310,5,c_black,c_black,c_black,c_gray,1);
+        }
+    }
+    
+    if global.selectx=3 {
+        if obj_crafter.total1&gt;0 {
+        draw_sprite(spr_icon_metal,0,view_xview[3]+400,view_yview[3]+270);
+        draw_text_color(view_xview[3]+450,view_yview[3]+310,10,c_white,c_white,c_white,c_black,1);
+        }
+        else {
+        draw_sprite_ext(spr_icon_metal,0,view_xview[3]+400,view_yview[3]+270,image_xscale,image_yscale,0,c_black,1);
+        draw_text_color(view_xview[3]+450,view_yview[3]+310,10,c_black,c_black,c_black,c_gray,1);
+        }
+    }
+
+    if global.selectx=4 {
+        ///
+        ///
+        ///
+    }
+    
+    if global.timer&gt;0 {
+        draw_healthbar(view_xview[3]+250,view_yview[3]+215,view_xview[3]+613,view_yview[3]+224,100-((global.timer/global.timermax)*100),0,c_gray,c_black,0,false,false);
+        }
+}
 </string>
           </argument>
         </arguments>

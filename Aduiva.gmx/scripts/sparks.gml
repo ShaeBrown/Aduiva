@@ -17,6 +17,6 @@ part_type_life(spark,10,15)
 wound = part_emitter_create(flow);
 part_system_depth(flow, -125);
 
-part_emitter_region(flow,wound,spotX+16,spotX+16,spotY+16,spotY+16,ps_shape_line ,ps_distr_gaussian);
-effect_create_above(ef_spark, spotX+16, spotY+16, 1, c_maroon); // the initial clash effect
+part_emitter_region(flow,wound,spotX,spotX,spotY,spotY,ps_shape_line ,ps_distr_gaussian);
+effect_create_above(ef_spark, spotX, spotY, 1, c_maroon); // the initial clash effect
 part_emitter_burst(flow,wound,spark,10) // a burst of spark particles extend out from the clash effect

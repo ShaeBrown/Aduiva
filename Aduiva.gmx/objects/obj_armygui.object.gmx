@@ -32,6 +32,7 @@ x=xx;
 y=yy;
 selected=false;
 global.count=0;
+test=path_add();
 
 
 </string>
@@ -115,11 +116,16 @@ else {
           <argument>
             <kind>1</kind>
             <string>if selected=true {
+    if mp_grid_path(global.grid,test,obj_commanderhut.x-20,obj_commanderhut.y + 60,mouse_x,mouse_y,1) {
     global.marker=true;
     global.dx=mouse_x;
     global.dy=mouse_y;
     selected=false;
+    with (obj_controller) {
+        alarm[1]=1;
+    }
     instance_destroy();
+    }
 }
 
     
@@ -145,7 +151,13 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string></string>
+            <string>with obj_controller {
+    if alarm[1]=-1 {
+        global.count=0;
+    }
+}
+        
+</string>
           </argument>
         </arguments>
       </action>

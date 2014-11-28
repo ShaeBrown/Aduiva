@@ -51,9 +51,11 @@ allow_hit=1
           <argument>
             <kind>1</kind>
             <string>///Allows to be hit again
-allow_hit=1
+allow_hit=1;
+with obj_gatherer {
 if part_system_exists(flow)
 part_emitter_destroy(flow, wound);
+}
 </string>
           </argument>
         </arguments>
@@ -106,16 +108,21 @@ if hits=3
           <argument>
             <kind>1</kind>
             <string>///Hit with sword, add hit point, wood, and requires a slash for each hit
-alarm[0]=10                 //sets alarm, so another slash is required for a hit point
-sparks(x,y);
-if allow_hit=0 exit;
 
+                     //sets alarm, so another slash is required for a hit point
+if allow_hit=0 exit;
+alarm[0]=10;
 if hits&lt;4 {                 //add a hit,add wood
     hits+=1
     global.gathinv[0,1]+=hits                       //add number of wood as number of hits
     allow_hit=0             //prevents mutiple attacks with one slash
 }
-
+with (obj_gatherer) {
+var xx, yy;
+xx = x + lengthdir_x(30, direction);
+yy = y + lengthdir_y(30, direction);
+sparks(xx,yy);
+}
 </string>
           </argument>
         </arguments>

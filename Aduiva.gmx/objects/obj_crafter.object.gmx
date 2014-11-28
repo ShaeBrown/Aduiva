@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Create variables
+global.timermax=0;
 friction=0.5 //the friction is essential to stop the motion added the player and makes a more natural looking stop
 move=1       //1 is true, 0 is false. Is the player allowed to move? Used to diable movement controls when attacking or during a tutorial etc.
 dir=270      //set by the movement keys, starts facing down
@@ -35,6 +36,7 @@ max_wood=50  //maximum carrying
 global.sawui=false;
 global.furnaceui=false;
 global.invui=false;
+global.workui=false;
 global.selectx=-1;
 global.selecty=-1;
 global.crafitem=ds_grid_create(9,4);
@@ -47,12 +49,22 @@ global.crafitem[#1,0]=spr_icon_wood;
 global.crafamount[#1,0]=10;
 global.crafitem[#2,0]=spr_icon_rock;
 global.crafamount[#2,0]=5;
-
+global.crafitem[#3,0]=spr_spear
+global.crafamount[#3,0]=10;
+global.crafitem[#4,0]=spr_plank;
+global.crafamount[#4,0]=0;
+global.crafitem[#4,0]=spr_icon_metal;
+global.crafamount[#4,0]=20;
+global.amount=1;
 select=false;
 xx=noone;
 yy=noone;
 global.spriteselect=noone
 global.amountselect=noone;
+total1=0
+total2=0
+total3=0
+global.total=0;
 </string>
           </argument>
         </arguments>
@@ -1071,8 +1083,6 @@ if keyboard_check_pressed(ord('A')) {
           </argument>
         </arguments>
       </action>
-    </event>
-    <event eventtype="4" ename="obj_saw">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -1089,34 +1099,129 @@ if keyboard_check_pressed(ord('A')) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw saw gui
+            <string>///Workbench UI
+if global.workui=true {
+    if global.selection="choose" {
+        if keyboard_check_pressed(ord('D')) {
+                global.selectx+=1;
+                if global.selectx&gt;4 {
+                        global.selectx=0;
+                }
+            }
+            if keyboard_check_pressed(ord('A')) {
+                global.selectx-=1;
+                if global.selectx&lt;0 {
+                    global.selectx=4;
+                }
+            }
+        }
+    }
+if global.selection="craft" {
+    if keyboard_check_pressed(ord('W')) {
+                global.amount++;
+                if global.amount&gt;global.total {
+                        global.amount=1;
+                }
+            }
+           if keyboard_check_pressed(ord('S')) {
+                global.amount--;
+                if global.amount=0 {
+                        global.amount=global.total;
+                }
+            }
+}
+       
+    
+    
+var done=false;
+if global.selection="choose" {
+    if global.selectx=0 {
+        for (var j=0;j&lt;4;j++) {
+            for (var i=0;i&lt;9;i++) {
+                    if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_spear) {
+                        total1=global.crafamount[#i,j] div 5;
+                        done=true;
+                    }
+                    if done=true break;
+                }
+            if done=true break;
+            }
+        if done=false {
+            total1=0;
+        }
+        done=false;
+        if total1&gt;0 {
+            for (var j=0;j&lt;4;j++) {
+                for (var i=0;i&lt;9;i++) {
+                    if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_plank) {
+                        total2=global.crafamount[#i,j];
+                        done=true;
+                    } 
+                if done=true break;
+            }
+        if done=true break;
+    }
+    }
+    if done=false {
+        total2=0;
+    }
+    if total1&lt;=total2 {
+        global.total=total1;
+    }
+    else {
+        global.total=total2;
+    }
+}
+    if global.selectx=1 {
+        for (var j=0;j&lt;4;j++) {
+            for (var i=0;i&lt;9;i++) {
+                    if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_icon_wood) {
+                        total1=global.crafamount[#i,j];
+                        done=true;
+                    }
+                    if done=true break;
+                }
+            if done=true break;
+            }
+        done=false;
+        global.total=total1;
+    }
+      if global.selectx=2 {
+         for (var j=0;j&lt;4;j++) {
+            for (var i=0;i&lt;9;i++) {
+                    if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_icon_wood) {
+                        total1=global.crafamount[#i,j] div 5;
+                        done=true;
+                    }
+                    if done=true break;
+                }
+            if done=true break;
+            }
+        done=false;
+        global.total=total1;
+    }
+      if global.selectx=3 {
+      for (var j=0;j&lt;4;j++) {
+            for (var i=0;i&lt;9;i++) {
+                    if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_icon_metal) {
+                        total1=global.crafamount[#i,j] div 10;
+                        done=true;
+                    }
+                    if done=true break;
+                }
+            if done=true break;
+            }
+        done=false;
+        global.total=total1;
 
-    global.sawui=true;
-
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_furnace">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Draw furnace GUI
-global.furnaceui=true
+    }
+      if global.selectx=4 {
+        global.total=0
+    }
+}
+            
+    
+        
 </string>
           </argument>
         </arguments>
@@ -1168,17 +1273,41 @@ speed=0     //stops player
           <argument>
             <kind>1</kind>
             <string>///Show inventory, drawn by controller
-if select=false {
+var xx, yy;
+xx = x + lengthdir_x(5, direction);
+yy = y + lengthdir_y(5, direction);
+if place_meeting(xx,yy,obj_furnace) {
+    if global.furnaceui=false {
+        global.furnaceui=true
+        global.selection="inv";
+    }
+    else {
+        global.furnaceui=false;
+    }
+}
+
+else if place_meeting(xx,yy,obj_workbench) {
+    if global.workui=false {
+        global.workui=true
+        global.selection="choose";
+    }
+    else {
+        global.workui=false;
+    }
+}
+
+else {
+    if global.invui=false {
+        global.invui=true;
+    }
+    else {
+        global.invui=false;
+    }
+}
+
 global.selecty=-1;
 global.selectx=-1;
-global.furnaceui=false;
-if global.invui=false {
-    global.invui=true;
-    }
-else {
-    global.invui=false;
-}
-}
+
 </string>
           </argument>
         </arguments>
@@ -1374,6 +1503,115 @@ else if global.selection="output" {
 
 
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Workbench UI
+if global.workui=true {
+    if global.selection="choose" {
+        if global.total&gt;0 {
+            global.selection="craft";
+        }
+    }
+    else if global.selection="craft" {
+     var done=false;
+     var exists=false;
+     global.spriteselect=global.workbench[global.selectx]
+     global.amountselect=global.amount;
+    if global.spriteselect=spr_barricade_icon {
+            global.timermax=20*global.amountselect;
+            global.timer=global.timermax;
+        for (var j=0;j&lt;4;j++) {
+                     for (var i=0;i&lt;9;i++) {
+                            if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_spear) {;
+                                global.crafamount[#i,j]-=global.amount*5;
+                                done=true;
+                        }
+                        if done=true break;
+                    }
+                if done=true break
+                } 
+                done=false;
+                  for (var j=0;j&lt;4;j++) {
+                     for (var i=0;i&lt;9;i++) {
+                            if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_plank) {;
+                                global.crafamount[#i,j]-=global.amount;
+                                done=true;
+                        }
+                        if done=true break;
+                    }
+                if done=true break
+                } 
+        }
+        if global.spriteselect=spr_spear {
+            global.timermax=15*global.amountselect;
+            global.timer=global.timermax;
+            for (var j=0;j&lt;4;j++) {
+                     for (var i=0;i&lt;9;i++) {
+                            if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_icon_wood) {;
+                                global.crafamount[#i,j]-=global.amount;
+                                done=true;
+                        }
+                        if done=true break;
+                    }
+                if done=true break
+                } 
+                done=false;
+        }
+        if global.spriteselect=spr_plank {
+            global.timermax=15*global.amountselect;
+            global.timer=global.timermax;
+            for (var j=0;j&lt;4;j++) {
+                     for (var i=0;i&lt;9;i++) {
+                            if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_icon_wood) {;
+                                global.crafamount[#i,j]-=global.amount*5;
+                                done=true;
+                        }
+                        if done=true break;
+                    }
+                if done=true break
+                } 
+                done=false;
+        }
+        if global.spriteselect=spr_spikes_icon {
+            global.timermax=30*global.amountselect;
+            global.timer=global.timermax;
+            for (var j=0;j&lt;4;j++) {
+                     for (var i=0;i&lt;9;i++) {
+                            if ds_grid_value_exists(global.crafitem,i,j,i,j,spr_icon_metal) {;
+                                global.crafamount[#i,j]-=global.amount*10;
+                                done=true;
+                        }
+                        if done=true break;
+                    }
+                if done=true break
+                } 
+                done=false;
+        }
+            
+    with (obj_workbench) {
+        alarm[0]=1;
+    }          
+    global.selection="choose";
+    }
+}
 </string>
           </argument>
         </arguments>

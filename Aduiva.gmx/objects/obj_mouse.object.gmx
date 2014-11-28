@@ -64,7 +64,7 @@ global.build=true;
             <kind>1</kind>
             <string>///Commander: Follow mouse, create waypoint, view boundaries
 
-if inside_view=2 {                                  //cancel if mouse is not in view 2
+if inside_view=2 &amp;&amp; view_yview[2]&lt;1520 {                                  //cancel if mouse is not in view 2
 
     screen_speed=(distance/25)    
     distance=distance_to_point(mouse_x,mouse_y)             //move invisable mouse object towards the mouse, faster if the mouse is further            
@@ -75,11 +75,11 @@ if inside_view=2 {                                  //cancel if mouse is not in 
                     instance_create(mouse_x,mouse_y,obj_waypoint)   //and create another one
     }
 }
+if view_yview[2]&gt;=1520 {
+    y-=5;
+}
 
-if y&gt;1800                                               //prevents the view from reaching crafter hut
-{y=yprevious}
-
-
+    
     
 </string>
           </argument>

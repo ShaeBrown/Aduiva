@@ -7,7 +7,53 @@
   <persistent>0</persistent>
   <parentName>obj_solid</parentName>
   <maskName>&lt;undefined&gt;</maskName>
-  <events/>
+  <events>
+    <event eventtype="6" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if global.btg=true {
+    if obj_mouse.inside_view=1 {
+    global.btg=false;
+       with (obj_controller) {
+            if global.buildertransfer[0]&gt;0 {
+                ii=spr_barricade_icon;
+                ll=0
+            }
+            else if global.buildertransfer[1]&gt;0 {
+                ii=spr_spikes_icon
+                ll=1
+            }
+            else {
+                ii=spr_tower_icon
+                ll=2
+            }
+            transferb=true;
+            alarm[2]=1;
+           
+            
+       }
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+  </events>
   <PhysicsObject>0</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>

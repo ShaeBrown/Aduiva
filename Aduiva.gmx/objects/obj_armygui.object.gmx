@@ -84,7 +84,8 @@ y=yy;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if((x &gt; obj_mouse.clickx &amp;&amp; x &lt; mouse_x &amp;&amp; y &lt; obj_mouse.clicky &amp;&amp; y &gt; mouse_y) || (x &gt; obj_mouse.clickx &amp;&amp; x &lt; mouse_x &amp;&amp; y &gt; obj_mouse.clicky &amp;&amp; y &lt; mouse_y) || (x &lt; obj_mouse.clickx &amp;&amp; x &gt; mouse_x &amp;&amp; y &lt; obj_mouse.clicky &amp;&amp; y &gt; mouse_y) || (x &lt; obj_mouse.clickx &amp;&amp; x &gt; mouse_x &amp;&amp; y &gt; obj_mouse.clicky &amp;&amp; y &lt; mouse_y)) { 
+            <string>if obj_mouse.inside_view=2 {
+if((x &gt; obj_mouse.clickx &amp;&amp; x &lt; mouse_x &amp;&amp; y &lt; obj_mouse.clicky &amp;&amp; y &gt; mouse_y) || (x &gt; obj_mouse.clickx &amp;&amp; x &lt; mouse_x &amp;&amp; y &gt; obj_mouse.clicky &amp;&amp; y &lt; mouse_y) || (x &lt; obj_mouse.clickx &amp;&amp; x &gt; mouse_x &amp;&amp; y &lt; obj_mouse.clicky &amp;&amp; y &gt; mouse_y) || (x &lt; obj_mouse.clickx &amp;&amp; x &gt; mouse_x &amp;&amp; y &gt; obj_mouse.clicky &amp;&amp; y &lt; mouse_y)) { 
     if global.commui=true {
     selected = true;
     global.count++;
@@ -93,6 +94,7 @@ y=yy;
 else {
     selected=false
     }  //is object inside selection rectangle?
+}
 </string>
           </argument>
         </arguments>
@@ -151,10 +153,12 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>with obj_controller {
+            <string>if obj_mouse.inside_view=2 {
+with obj_controller {
     if alarm[1]=-1 {
         global.count=0;
     }
+}
 }
         
 </string>

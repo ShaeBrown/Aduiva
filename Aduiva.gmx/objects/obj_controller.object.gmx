@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-9</depth>
+  <depth>-50</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -27,8 +27,10 @@
             <kind>1</kind>
             <string>///Variables
 ii=0;
+ll=noone;
 global.armycount=60; 
 transfer=false;
+transferb=false;
 u=0;
 army_count=60  //how many army players are available?
 global.num=0;  //change to an array?
@@ -42,11 +44,150 @@ global.dx=0
 global.dy=0
 global.selection="inv";
 
-
+global.btdone=false;
+global.tower[0]=spr_tower_0
+global.tower[1]=spr_tower_1
+global.tower[2]=spr_tower_2
+global.tower[3]=spr_tower_3
 global.wall[0]=spr_bar_vertical
 global.wall[1]=spr_bar_diagonal_right
 global.wall[2]=spr_bar_horizontal
 global.wall[3]=spr_bar_diagonal_left
+global.build[0,0]=spr_barricade_icon;
+global.build[1,0]=spr_spikes_icon;
+global.build[2,0]=spr_tower_icon;
+global.build[3,0]=spr_arrow
+global.build[0,1]=20;
+global.build[1,1]=3;
+global.build[2,1]=1;
+global.build[3,1]=20;
+shot=0
+global.timerscore=0;
+alarm[3]=30;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if global.tutorialprogress=0 {
+    global.tutorialprogress=noone;
+    show_message("The enemies are approaching, gather wood!");
+}
+if global.tutorialprogress=2 {
+      global.tutorialprogress=noone;
+        show_message("Use the workbench to craft a barricade!");
+}
+if global.tutorialprogress=4 {
+    global.tutorialprogress=noone;
+    show_message("Click the crafterhut to retrieve your barricade.
+    Place it to defend the town gate");
+}
+if global.tutorialprogress=5 {
+    global.tutorialprogress=noone;
+    show_message("An attack is approaching, deploy some minions");
+    global.tutorial=false;
+    instance_create(928,1424,obj_spawn);
+}
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>global.timerscore++;
+alarm[3]=30;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+if transferb=true {
+if (u=20) {                                               //if the text rises 20 pixels
+        u=0;
+        if ii=spr_barricade_icon &amp;&amp; global.buildertransfer[1]&gt;0 {
+            ii=spr_spikes_icon;
+            alarm[2]=2;
+            ll=1
+        }
+        else if ii=spr_spikes_icon &amp;&amp; global.buildertransfer[2]&gt;0 {
+            ii=spr_tower_icon;
+            alarm[2]=2;
+            ll=2
+        }
+        else {
+            transferb=false;
+            ll=noone;
+            alarm[2]=2
+        }
+}
+            
+else {
+    u++;                                      //rise the text
+    alarm[2]=2
+    }
+}
+else {
+    global.build[0,1]+=global.buildertransfer[0];
+    global.build[1,1]+=global.buildertransfer[1];
+    global.build[2,1]+=global.buildertransfer[2];
+    global.buildertransfer[0]=0;
+    global.buildertransfer[1]=0;
+    global.buildertransfer[2]=2;
+}
 </string>
           </argument>
         </arguments>
@@ -226,29 +367,6 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Play sound
-caster_loop(caster_load(working_directory+"sound\audio\theme.ogg"), 1, 1);
-
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>///Create minions in gui
 var i;
  for (i=1;i&lt;=global.armycount;i+=1) {
@@ -256,6 +374,10 @@ var i;
              global.num=i;
   }
   randomize();
+  if global.tutorial=false {
+    instance_create(928,1424,obj_spawn);
+  }
+  global.tutorialprogress=0;
 
 </string>
           </argument>
@@ -286,6 +408,79 @@ var i;
       </action>
     </event>
     <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Tutorial
+if global.tutorial=true {
+    if global.tutorialprogress=0 { 
+        if view_current=0 {
+            draw_set_alpha(0.4)
+            draw_rectangle_color(view_xview[0],view_yview[0],view_xview[0]+view_wview[0],view_yview[0]+view_hview[0],c_black,c_black,c_black,c_black,false)
+            draw_set_alpha(1)
+            draw_sprite(spr_tut_gath,0,view_xview[0],view_yview[0]);
+            if alarm[4]=-1 {
+                alarm[4]=60;
+            }
+        }
+    }
+    if global.tutorialprogress=1 {
+        if view_current=0 {
+            draw_sprite(spr_show,0,obj_crafterhut.x+100,obj_crafterhut.y-100)
+        }
+    }
+    if global.tutorialprogress=2 { 
+        if view_current=3 {
+            draw_set_alpha(0.4)
+            draw_rectangle_color(view_xview[3],view_yview[3],view_xview[3]+view_wview[3],view_yview[3]+view_hview[3],c_black,c_black,c_black,c_black,false)
+            draw_set_alpha(1)
+            draw_sprite(spr_tut_craf,0,view_xview[3],view_yview[3]);
+            if alarm[4]=-1 {
+                alarm[4]=60;
+            }
+        }
+    }
+    if global.tutorialprogress=4 {
+        if view_current=1 {
+            draw_set_alpha(0.4)
+            draw_rectangle_color(view_xview[1],view_yview[1],view_xview[1]+view_wview[1],view_yview[1]+view_hview[1],c_black,c_black,c_black,c_black,false)
+            draw_set_alpha(1)
+            draw_sprite(spr_tut_build,0,view_xview[1],view_yview[1]);
+            if alarm[4]=-1 {
+                alarm[4]=60;
+            }
+        }
+    }
+    if global.tutorialprogress=5 {
+            if view_current=2 {
+            draw_set_alpha(0.4)
+            draw_rectangle_color(view_xview[2],view_yview[2],view_xview[2]+view_wview[2],view_yview[2]+view_hview[2],c_black,c_black,c_black,c_black,false)
+            draw_set_alpha(1)
+            draw_sprite(spr_tut_comm,0,view_xview[2],view_yview[2]);
+            if alarm[4]=-1 {
+                alarm[4]=60;
+            }
+        }
+    }
+        
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -334,7 +529,9 @@ if transfer=true {
             draw_sprite_stretched(global.gathinv[ii,0],0,obj_crafterhut.x+100,obj_crafterhut.y-u,16,16)
             }
             draw_sprite_stretched(global.gathinv[ii,0],0,view_xview[3]+50,view_yview[3]+25,16,16);
+            draw_set_color(c_white);
             draw_text(view_xview[3]+70,view_yview[3]+25,"+" + string(global.gathinv[ii,1]))
+            draw_set_color(c_black);
         }
         else {
             ii+=1;
@@ -345,8 +542,16 @@ if transfer=true {
         transfer=false;
     }
 }
+if instance_exists(obj_gatherer) {
 if view_current==0 {
-    draw_healthbar(view_xview[0]+25,view_yview[0]+25,view_xview[0]+view_wview[0]-25,view_yview[0]+30,(obj_gatherer.h/10000)*100,"",c_red,c_green,0,0,1);
+    draw_healthbar(view_xview[0]+25,view_yview[0]+25,view_xview[0]+view_wview[0]-25,view_yview[0]+30,(obj_gatherer.h/1000)*100,"",c_red,c_green,0,0,1);
+    }
+}
+else {
+    if view_current==0 {
+        draw_set_color(c_black);
+        draw_rectangle(view_xview[0],view_yview[0],view_xview[0]+view_wview[0],view_yview[0]+view_hview[0],0)
+    }
     }
 </string>
           </argument>
@@ -505,6 +710,49 @@ if global.invui=true {
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Builder
+if transferb=true {
+    if (view_current==1) {
+        draw_text(view_xview[1]+25,view_yview[1]+75+u,"+ " + string(global.buildertransfer[ll]));
+        draw_sprite_stretched(ii,0,view_xview[1]+50,view_yview[1]+70+u,58,58);
+        }
+    }
+
+if global.buildui=true {
+    if (view_current==1) {
+        draw_set_alpha(0.7)
+        draw_sprite_stretched(spr_comm_ui,0,view_xview[1],view_yview[1]+view_hview[1]-125,800,125);
+        draw_set_alpha(1);
+        draw_set_halign ( fa_left )
+        for (var i=0;i&lt;3;i++) {
+            if obj_mouse.selection!=i {
+                draw_sprite_stretched(global.build[i,0],0,view_xview[1]+31.5+i*75,view_yview[1]+view_hview[1]-75,58,58);
+            }
+            draw_text_color(view_xview[1]+75+i*75,view_yview[1]+view_hview[1]-30,global.build[i,1],c_white,c_white,c_white,c_black,1);
+        }
+    }
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Workbench UI
 if global.workui=true {
     draw_set_halign ( fa_right );
@@ -609,6 +857,75 @@ if global.workui=true {
         draw_healthbar(view_xview[3]+250,view_yview[3]+215,view_xview[3]+613,view_yview[3]+224,100-((global.timer/global.timermax)*100),0,c_gray,c_black,0,false,false);
         }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Crafter transfer
+if global.btdone=false {
+if obj_crafter.item!=-1 {
+    draw_sprite(obj_crafter.item,0,view_xview[3]+50,view_yview[3]+25+obj_crafter.u);
+    if obj_crafter.item=spr_barricade_icon {
+        draw_set_color(c_white);
+        draw_text( view_xview[3]+25,view_yview[3]+25+obj_crafter.u,"- " + string(global.buildertransfer[0]));
+    }
+       if obj_crafter.item=spr_spikes_icon {
+        draw_set_color(c_white)
+        draw_text( view_xview[3]+25,view_yview[3]+25+obj_crafter.u,"- " + string(global.buildertransfer[1]));
+    }
+       if obj_crafter.item=spr_tower_icon {
+        draw_text( view_xview[3]+25,view_yview[3]+25+obj_crafter.u,"- " + string(global.buildertransfer[2]));
+        draw_set_color(c_black);
+    }
+}
+}
+if view_current=1 {
+if global.btg=true {
+    draw_sprite(spr_crafter_glow,0,obj_crafterhut.x,obj_crafterhut.y)
+}
+}
+        
+        
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="112">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>screen_save("shot"+string(shot)+".png")
+shot++;
 </string>
           </argument>
         </arguments>

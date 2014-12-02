@@ -11,10 +11,4 @@ n = round(y/argument1 + x/argument0);
 var xx,yy
 xx = (n - m)/2*argument0;
 yy = (n + m)/2*argument1;
-if position_empty(xx,yy) {
-    x=xx;
-    y=yy;
-}
-else {
-    instance_destroy();
-}
+

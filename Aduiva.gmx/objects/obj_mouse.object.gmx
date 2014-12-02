@@ -29,8 +29,6 @@
 clickx=0  //x cordinate of click
 clicky=0  //y cordinates of click
 drawbox=false //draw the selection rectangle
-x=mouse_x           //sets x and y on cursor
-y=mouse_y
 screen_speed=0      //speed the view moves at
 distance=0          //distance away from mouse
 xx=window_mouse_get_x();    //mouse cordinates relative to screen, not room
@@ -39,7 +37,7 @@ friction=0.5        //slowly comes to stop when outside view
 build=0             //build mode active
 inside_view=0       //which view is the mouse in
 global.wallrotation=0           //wall orientation
-global.build=true;         
+selection=noone;
 </string>
           </argument>
         </arguments>
@@ -64,20 +62,31 @@ global.build=true;
             <kind>1</kind>
             <string>///Commander: Follow mouse, create waypoint, view boundaries
 
-if inside_view=2 &amp;&amp; view_yview[2]&lt;1520 {                                  //cancel if mouse is not in view 2
+if inside_view=2  {                                  //cancel if mouse is not in view 2
 
     screen_speed=(distance/25)    
-    distance=distance_to_point(mouse_x,mouse_y)             //move invisable mouse object towards the mouse, faster if the mouse is further            
-    move_towards_point(mouse_x,mouse_y,screen_speed)        //the view follows     
+    distance=distance_to_point(mouse_x,mouse_y);
+    direction=point_direction(x,y,mouse_x,mouse_y)      
+    var xxx, yyy;
+    xxx = x + lengthdir_x(50, direction);
+    yyy = y + lengthdir_y(50, direction);  
+    if !collision_point(xxx,yyy,obj_viewborder,1,1) {     //move invisable mouse object towards the mouse, faster if the mouse is further            
+    move_towards_point(mouse_x,mouse_y,screen_speed)  
+    }   
+    else {
+         ///so player doesn't stop between pixels
+         if speed&gt;0 {
+         
+        speed--;
+        }     //stops player
+        }   //the view follows     
                                                             //speed is the distance the mouse is divided by fifty                       
 
     if mouse_check_button_pressed(mb_right) {                          //when mouse is clicked
                     instance_create(mouse_x,mouse_y,obj_waypoint)   //and create another one
     }
 }
-if view_yview[2]&gt;=1520 {
-    y-=5;
-}
+
 
     
     
@@ -102,27 +111,64 @@ if view_yview[2]&gt;=1520 {
           <argument>
             <kind>1</kind>
             <string>///Builder
-
-
-
-if inside_view=1 {        //cancel if mouse is not in view 1
-
+if inside_view=1 {     
     if mouse_check_button_pressed(mb_left) then  {
-        if global.build=true {
-            instance_create(mouse_x,mouse_y,obj_wall) //makes a wall when you click at the mouse, snapped to grid
+        if collision_circle(view_xview[1]+64.5,view_yview[1]+view_hview[1]-29,40,mouse,0,0) {
+            if global.buildui=true &amp;&amp; global.build[0,1]&gt;0 {
+                if selection=0 {
+                    selection=noone;
+                }
+            else {
+                selection=0
+            }
         }
     }
+    else if collision_circle(view_xview[1]+139.5,view_yview[1]+view_hview[1]-29,40,mouse,0,0) {
+         if global.buildui=true &amp;&amp; global.build[1,1]&gt;0 {
+                   if selection=1 {
+                    selection=noone;
+                    }
+                    else {
+                        selection=1;
+                    }
+        }
+    }
+    else if collision_circle(view_xview[1]+296.5,view_yview[1]+view_hview[1]-29,60,mouse,0,0) {
+         if global.buildui=true &amp;&amp; global.build[2,1]&gt;0 {
+            if selection=2 {
+                selection=noone;
+            }
+            else {
+                selection=2;
+            }
+         }
+    }
 
-
-
-if mouse_wheel_down() or mouse_wheel_up() {
-    global.wallrotation++
-    if global.wallrotation&gt;3 {
-    global.wallrotation=0  
-    
+   else if !position_meeting(mouse_x,mouse_y,obj_structure)  {
+        if selection=0 {
+                instance_create(mouse_x,mouse_y,obj_wall)
+        }   
+        else if selection=1 {
+                instance_create(mouse_x,mouse_y,obj_spikes)
+        }
+        else if selection=2 {
+                instance_create(mouse_x,mouse_y,obj_tower)
+        }
+   } 
+   }
+}
+if selection!=noone {
+    if global.build[selection,1]=0 {
+        selection=noone;
     }
 }
+if mouse_wheel_down() or mouse_wheel_up() {
+    global.wallrotation++
+        if global.wallrotation&gt;3 {
+            global.wallrotation=0  
+        }
 }
+
     
 </string>
           </argument>
@@ -218,13 +264,19 @@ if inside_view==2 || inside_view=4 {
           <argument>
             <kind>1</kind>
             <string>///Draw build option
-
-    if view_current=1{
+if view_current=1{
         if inside_view=1 {
-            draw_sprite(global.wall[global.wallrotation],0,mouse_x,mouse_y)
-        }
+            if selection=0 {
+                draw_sprite(global.wall[global.wallrotation],0,mouse_x,mouse_y)
+            }
+            else if selection=1 {
+                draw_sprite(spr_spikes,0,mouse_x,mouse_y)
+            }
+            else if selection=2 {
+                draw_sprite(global.tower[global.wallrotation],0,mouse_x,mouse_y)
+            }
     }
-
+}
 </string>
           </argument>
         </arguments>

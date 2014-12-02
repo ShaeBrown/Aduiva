@@ -126,7 +126,7 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if collision_point(mouse_x,mouse_y,obj_comui,1,0) {
+            <string>if obj_mouse.inside_view=2 {
     if global.commui==false {
         global.press=true
         alarm[1]=10;
@@ -163,7 +163,7 @@ else {
         if global.press=false {
             draw_sprite(spr_menu,0,view_xview[2]+25,view_yview[2]+25)
         }
-        else {
+        else if obj_mouse.inside_view=2 {
             draw_sprite(spr_menu_click,0,view_xview[2]+25,view_yview[2]+25);
         }
     }

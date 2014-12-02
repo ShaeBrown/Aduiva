@@ -2,7 +2,7 @@
 <object>
   <spriteName>spr_tree</spriteName>
   <solid>-1</solid>
-  <visible>-1</visible>
+  <visible>0</visible>
   <depth>1</depth>
   <persistent>0</persistent>
   <parentName>obj_solid</parentName>
@@ -79,12 +79,7 @@ part_emitter_destroy(flow, wound);
           <argument>
             <kind>1</kind>
             <string>///Change tree's height with each hit, then destroy
-if hits=1
-{sprite_index=spr_tree_half}
-if hits=2
-{sprite_index=spr_tree_trunk}
-if hits=3
-{instance_destroy()}
+if hits=3 allow_hit=0;
 </string>
           </argument>
         </arguments>
@@ -108,7 +103,10 @@ if hits=3
           <argument>
             <kind>1</kind>
             <string>///Hit with sword, add hit point, wood, and requires a slash for each hit
-
+if global.tutorial=true &amp;&amp; global.gathinv[0,1]=0 &amp;&amp; global.tutorialprogress=noone {
+    global.tutorialprogress=1
+    show_message("Bring the wood to the crafter's building");
+}
                      //sets alarm, so another slash is required for a hit point
 if allow_hit=0 exit;
 alarm[0]=10;
@@ -123,6 +121,7 @@ xx = x + lengthdir_x(30, direction);
 yy = y + lengthdir_y(30, direction);
 sparks(xx,yy);
 }
+
 </string>
           </argument>
         </arguments>

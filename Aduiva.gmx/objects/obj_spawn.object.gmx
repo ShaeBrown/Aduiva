@@ -26,6 +26,9 @@
           <argument>
             <kind>1</kind>
             <string>global.paths[0]=path0;
+global.paths[1]=path1;
+global.paths[2]=path2;
+global.paths[3]=path3;
 //more paths
 maxsize=5;
 global.groupsize=0;
@@ -62,7 +65,7 @@ else {
     global.groupsize--;
     alarm[0]=30;
 }
-instance_create(432,1808,obj_enemy);
+instance_create(976,1392,obj_enemy);
 
 
 </string>

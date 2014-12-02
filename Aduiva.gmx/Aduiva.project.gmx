@@ -21,9 +21,11 @@
       </sprites>
       <sprites name="Icons">
         <sprite>sprites\spr_menu_flip</sprite>
-        <sprite>sprites\spr_menu_click_flip</sprite>
-        <sprite>sprites\spr_icon_potion</sprite>
         <sprite>sprites\spr_menu</sprite>
+        <sprite>sprites\spr_show</sprite>
+        <sprite>sprites\spr_menu_click_flip</sprite>
+        <sprite>sprites\spr_menu_click</sprite>
+        <sprite>sprites\spr_icon_potion</sprite>
         <sprite>sprites\spr_select_vertical</sprite>
         <sprite>sprites\spr_select</sprite>
         <sprite>sprites\spr_icon_wood</sprite>
@@ -31,8 +33,8 @@
         <sprite>sprites\spr_minion1</sprite>
         <sprite>sprites\spr_icon_metal</sprite>
         <sprite>sprites\spr_icon_rock</sprite>
-        <sprite>sprites\spr_menu_click</sprite>
         <sprite>sprites\spr_barricade_icon</sprite>
+        <sprite>sprites\spr_tower_icon</sprite>
         <sprite>sprites\spr_plank</sprite>
         <sprite>sprites\spr_spikes_icon</sprite>
         <sprite>sprites\spr_spear</sprite>
@@ -41,61 +43,19 @@
         <sprite>sprites\spr_craft_select</sprite>
       </sprites>
     </sprites>
-    <sprites name="Gatherer">
-      <sprites name="Walk">
-        <sprite>sprites\spr_gatherer_walk_up</sprite>
-        <sprite>sprites\spr_gatherer_walk_down</sprite>
-        <sprite>sprites\spr_gatherer_walk_left</sprite>
-        <sprite>sprites\spr_gatherer_walk_right</sprite>
-      </sprites>
-      <sprites name="Sword">
-        <sprite>sprites\spr_sword_up</sprite>
-        <sprite>sprites\spr_sword_left</sprite>
-        <sprite>sprites\spr_sword_right</sprite>
-        <sprite>sprites\spr_sword_down</sprite>
-        <sprite>sprites\spr_gatherer_sword_up</sprite>
-        <sprite>sprites\spr_gatherer_sword_left</sprite>
-        <sprite>sprites\spr_gatherer_sword_down</sprite>
-        <sprite>sprites\spr_gatherer_sword_right</sprite>
-      </sprites>
-      <sprites name="Magic">
-        <sprite>sprites\spr_gatherer_magic_left</sprite>
-        <sprite>sprites\spr_gatherer_magic_right</sprite>
-        <sprite>sprites\spr_gatherer_magic_up</sprite>
-        <sprite>sprites\spr_gatherer_magic_down</sprite>
-      </sprites>
-      <sprites name="Idle">
-        <sprite>sprites\spr_gatherer_idle_right</sprite>
-        <sprite>sprites\spr_gatherer_idle_down</sprite>
-        <sprite>sprites\spr_gatherer_idle_up</sprite>
-        <sprite>sprites\spr_gatherer_idle_left</sprite>
-      </sprites>
-    </sprites>
     <sprites name="Old">
-      <sprite>sprites\spr_tree</sprite>
-      <sprite>sprites\spr_metal</sprite>
-      <sprite>sprites\spr_furnace</sprite>
       <sprite>sprites\spr_saw</sprite>
       <sprite>sprites\spr_tree_trunk</sprite>
-      <sprite>sprites\spr_tree_half</sprite>
       <sprite>sprites\spr_waypoint</sprite>
       <sprite>sprites\spr_army</sprite>
       <sprite>sprites\spr_send</sprite>
       <sprite>sprites\spr_triangle</sprite>
       <sprite>sprites\spr_marker</sprite>
-      <sprite>sprites\spr_crafter_glow</sprite>
-      <sprite>sprites\spr_crafer</sprite>
-      <sprite>sprites\spr_spawn</sprite>
       <sprite>sprites\spr_commander</sprite>
       <sprite>sprites\spr_wall_yy</sprite>
       <sprite>sprites\spr_wall_y</sprite>
       <sprite>sprites\spr_wall_xx</sprite>
       <sprite>sprites\spr_wall_x</sprite>
-      <sprite>sprites\spr_army_leader</sprite>
-      <sprite>sprites\spr_gatherer_up</sprite>
-      <sprite>sprites\spr_gatherer_right</sprite>
-      <sprite>sprites\spr_gatherer_left</sprite>
-      <sprite>sprites\spr_gatherer_down</sprite>
     </sprites>
     <sprites name="Enemy">
       <sprites name="Walk">
@@ -173,28 +133,142 @@
       </sprites>
       <sprite>sprites\spr_crystal</sprite>
       <sprite>sprites\spr_crafter</sprite>
+      <sprite>sprites\spr_crafter_glow</sprite>
+      <sprite>sprites\spr_arrow</sprite>
       <sprite>sprites\spr_spikes</sprite>
-      <sprite>sprites\spr_tower_right_down</sprite>
-      <sprite>sprites\spr_tower_icon</sprite>
+      <sprite>sprites\spr_gate</sprite>
+      <sprites name="Tower">
+        <sprite>sprites\spr_tower_0</sprite>
+        <sprite>sprites\spr_tower_1</sprite>
+        <sprite>sprites\spr_tower_3</sprite>
+        <sprite>sprites\spr_tower_2</sprite>
+      </sprites>
+      <sprite>sprites\spr_spawn</sprite>
     </sprites>
     <sprites name="Crafting Objects">
       <sprite>sprites\spr_furnace_1</sprite>
+      <sprite>sprites\spr_door</sprite>
+      <sprite>sprites\spr_workbench</sprite>
+    </sprites>
+    <sprites name="Invisable">
+      <sprite>sprites\spr_border</sprite>
+      <sprite>sprites\spr_solid</sprite>
+      <sprite>sprites\spr_tree</sprite>
+    </sprites>
+    <sprites name="Gatherer">
+      <sprites name="Idle">
+        <sprite>sprites\spr_gatherer_idle_left_up</sprite>
+        <sprite>sprites\spr_gatherer_idle_right_up</sprite>
+        <sprite>sprites\spr_gatherer_idle_left</sprite>
+        <sprite>sprites\spr_gatherer_idle_up</sprite>
+        <sprite>sprites\spr_gatherer_idle_right</sprite>
+        <sprite>sprites\spr_gatherer_idle_right_down</sprite>
+        <sprite>sprites\spr_gatherer_idle_down</sprite>
+        <sprite>sprites\spr_gatherer_idle_left_down</sprite>
+      </sprites>
+      <sprites name="Run">
+        <sprite>sprites\spr_gatherer_left</sprite>
+        <sprite>sprites\spr_gatherer_left_up</sprite>
+        <sprite>sprites\spr_gatherer_up</sprite>
+        <sprite>sprites\spr_gatherer_right_up</sprite>
+        <sprite>sprites\spr_gatherer_right</sprite>
+        <sprite>sprites\spr_gatherer_right_down</sprite>
+        <sprite>sprites\spr_gatherer_down</sprite>
+        <sprite>sprites\spr_gatherer_left_down</sprite>
+      </sprites>
+      <sprites name="Sword">
+        <sprite>sprites\spr_gatherer_sword_left</sprite>
+        <sprite>sprites\spr_gatherer_sword_left_up</sprite>
+        <sprite>sprites\spr_gatherer_sword_up</sprite>
+        <sprite>sprites\spr_gatherer_sword_right_up</sprite>
+        <sprite>sprites\spr_gatherer_sword_right</sprite>
+        <sprite>sprites\spr_gatherer_sword_right_down</sprite>
+        <sprite>sprites\spr_gatherer_sword_down</sprite>
+        <sprite>sprites\spr_gatherer_sword_left_down</sprite>
+        <sprite>sprites\spr_sword_left</sprite>
+        <sprite>sprites\spr_sword_left_up</sprite>
+        <sprite>sprites\spr_sword_up</sprite>
+        <sprite>sprites\spr_sword_right_up</sprite>
+        <sprite>sprites\spr_sword_right</sprite>
+        <sprite>sprites\spr_sword_right_down</sprite>
+        <sprite>sprites\spr_sword_down</sprite>
+        <sprite>sprites\spr_sword_left_down</sprite>
+      </sprites>
+    </sprites>
+    <sprites name="Crafter">
+      <sprites name="Idle">
+        <sprite>sprites\spr_crafter_idle_right_up</sprite>
+        <sprite>sprites\spr_crafter_idle_up</sprite>
+        <sprite>sprites\spr_crafter_idle_left_up</sprite>
+        <sprite>sprites\spr_crafter_idle_left</sprite>
+        <sprite>sprites\spr_crafter_idle_left_down</sprite>
+        <sprite>sprites\spr_crafter_idle_down</sprite>
+        <sprite>sprites\spr_crafter_idle_right_down</sprite>
+        <sprite>sprites\spr_crafter_idle_right</sprite>
+      </sprites>
+      <sprites name="Run">
+        <sprite>sprites\spr_crafter_left</sprite>
+        <sprite>sprites\spr_crafter_left_up</sprite>
+        <sprite>sprites\spr_crafter_up</sprite>
+        <sprite>sprites\spr_crafter_right_up</sprite>
+        <sprite>sprites\spr_crafter_right</sprite>
+        <sprite>sprites\spr_crafter_right_down</sprite>
+        <sprite>sprites\spr_crafter_down</sprite>
+        <sprite>sprites\spr_crafter_left_down</sprite>
+      </sprites>
+    </sprites>
+    <sprites name="Rocks">
+      <sprite>sprites\rock1</sprite>
+      <sprite>sprites\rock2</sprite>
+      <sprite>sprites\rock3</sprite>
+      <sprite>sprites\rock4</sprite>
+      <sprite>sprites\rock5</sprite>
+      <sprite>sprites\rock6</sprite>
+      <sprite>sprites\rock7</sprite>
+      <sprite>sprites\rock8</sprite>
+      <sprite>sprites\rock9</sprite>
+    </sprites>
+    <sprites name="Buttons">
+      <sprite>sprites\spr_credits</sprite>
+      <sprite>sprites\spr_credits_enter</sprite>
+      <sprite>sprites\spr_tutorial</sprite>
+      <sprite>sprites\spr_tutorial_enter</sprite>
+      <sprite>sprites\spr_play</sprite>
+      <sprite>sprites\spr_play_enter</sprite>
+      <sprite>sprites\spr_main_menu</sprite>
+      <sprite>sprites\spr_main_menu_enter</sprite>
+    </sprites>
+    <sprites name="Tutorial">
+      <sprite>sprites\spr_tut_gath</sprite>
+      <sprite>sprites\spr_tut_craf</sprite>
+      <sprite>sprites\spr_tut_build</sprite>
+      <sprite>sprites\spr_tut_comm</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
-    <background>background\background0</background>
+    <background>background\grassland</background>
+    <background>background\title</background>
+    <background>background\dungeon</background>
+    <backgrounds name="Tiles">
+      <background>background\background2</background>
+      <background>background\background3</background>
+      <background>background\background5</background>
+      <background>background\background6</background>
+    </backgrounds>
   </backgrounds>
   <paths name="paths">
     <path>paths\path0</path>
+    <path>paths\path2</path>
+    <path>paths\path1</path>
+    <path>paths\path3</path>
   </paths>
   <scripts name="scripts">
     <script>scripts\instance_nth_nearest.gml</script>
     <script>scripts\arc_of_sight.gml</script>
-    <script>scripts\blood.gml</script>
     <script>scripts\sparks.gml</script>
     <script>scripts\sparks_crystal.gml</script>
     <script>scripts\move_snap_isometric.gml</script>
-    <script>scripts\path_get_nearest_point.gml</script>
+    <script>scripts\path_get_closest_point.gml</script>
   </scripts>
   <objects name="objects">
     <objects name="Characters">
@@ -203,6 +277,7 @@
       <object>objects\obj_gatherer</object>
       <object>objects\obj_crafter</object>
       <object>objects\obj_enemy</object>
+      <object>objects\obj_enemy_parent</object>
     </objects>
     <objects name="Structures">
       <object>objects\obj_crystal</object>
@@ -210,29 +285,42 @@
       <object>objects\obj_commanderhut</object>
       <object>objects\obj_crafterhut</object>
       <object>objects\obj_wall</object>
+      <object>objects\obj_spikes</object>
+      <object>objects\obj_structure</object>
+      <object>objects\obj_tower</object>
     </objects>
     <objects name="Interactive">
       <object>objects\obj_workbench</object>
       <object>objects\obj_furnace</object>
       <object>objects\obj_window</object>
       <object>objects\obj_tree</object>
+      <object>objects\obj_arrow</object>
       <object>objects\obj_metal</object>
       <object>objects\obj_solid</object>
       <object>objects\obj_soul</object>
+      <object>objects\obj_door</object>
+      <object>objects\obj_viewborder</object>
+      <object>objects\obj_rock</object>
     </objects>
     <objects name="Controller">
       <object>objects\obj_mouse</object>
       <object>objects\obj_comui</object>
-      <object>objects\obj_intruction_controller</object>
       <object>objects\obj_armygui</object>
       <object>objects\obj_waypoint</object>
-      <object>objects\object19</object>
+      <object>objects\obj_buildui</object>
       <object>objects\obj_controller</object>
+      <object>objects\mouse</object>
+      <object>objects\obj_play</object>
+      <object>objects\obj_tutorial</object>
+      <object>objects\obj_credits</object>
+      <object>objects\obj_main_menu</object>
+      <object>objects\obj_credits_controller</object>
     </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\room_1</room>
-    <room>rooms\room_instructions</room>
+    <room>rooms\room_title</room>
+    <room>rooms\room_credits</room>
+    <room>rooms\room_play</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

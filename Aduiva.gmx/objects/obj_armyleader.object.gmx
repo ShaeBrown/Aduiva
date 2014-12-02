@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>-1</depth>
   <persistent>0</persistent>
-  <parentName>&lt;undefined&gt;</parentName>
+  <parentName>obj_enemy_parent</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -127,6 +127,9 @@ grid=-1;
           <argument>
             <kind>1</kind>
             <string>///Delete path
+global.diesprite=sprite_index;
+instance_create(x,y,obj_soul);
+
 if path_exists(mypath) {
     path_delete(mypath);
     
@@ -143,9 +146,6 @@ if grid=-1 {
     mp_grid_destroy(grid);
 
 }
-if part_system_exists(flow)
-part_emitter_destroy(flow, wound);
-
 
 </string>
           </argument>
@@ -170,11 +170,9 @@ part_emitter_destroy(flow, wound);
           <argument>
             <kind>1</kind>
             <string>///Die
-if part_system_exists(flow)
-part_emitter_destroy(flow, wound);
+instance_destroy();
 global.diesprite=sprite_index;
 instance_create(x,y,obj_soul);
-instance_destroy();
 
 </string>
           </argument>
@@ -242,6 +240,7 @@ if  collision_circle(x,y,20,obj_enemy,0,0) {
        sprite_index=miniona[round(direction / 45) mod 8];
        image_speed=0.2;
 }
+
 else {
     if rot=true {
         sprite_index=minion[round(direction / 45) mod 8];
@@ -252,16 +251,17 @@ else {
     }
 
 }
+
 if h=0 {
     sprite_index=miniond[round(direction / 45) mod 8];
-    image_speed=0.2;
+    image_speed=0.1;
+    attack=false;
     if image_index&gt;image_number-1 {
-        if alarm[3]=-1 {
-        alarm[3]=10;
-        blood(x,y);
-        }
+        instance_destroy();
     }
 }
+
+
 </string>
           </argument>
         </arguments>
@@ -283,10 +283,8 @@ if h=0 {
           <argument>
             <kind>1</kind>
             <string>///Pathfinding
-                               //is active
-    if path_exists(grouppath) &amp;&amp; attack=false {          //if a destination exists
-    
-
+move_outside_solid(direction,speed);                               //is active
+if path_exists(grouppath) &amp;&amp; attack=false {          //if a destination exists
 //First check to see where on the global path we are and move the point foward if necessary
         if point_distance(x,y,x1,y1)&lt;12 {
             pos1+=1;
@@ -327,7 +325,7 @@ if h=0 {
             xxx = x + lengthdir_x(5, direction);
             yyy = y + lengthdir_y(5, direction);
             
-            if collision_circle(xxx,yyy,5,obj_armyleader,true,true) {
+            if collision_circle(xxx,yyy,5,obj_armyleader,false,true) {
                 if path_exists(grouppath){
                 path_position=path_positionprevious;
                 direction+=10;
@@ -335,6 +333,10 @@ if h=0 {
                 image_speed=0;
                 }
                
+            }
+            
+            else if place_meeting(x,y,obj_solid) {
+                move_outside_solid(direction,speed);
             }
             
             
@@ -348,8 +350,7 @@ if h=0 {
                 }
             }
 }
-   
-        
+      
 var arc;
 if attack=false {
 arc=arc_of_sight(x,y,direction,200,90,obj_enemy,obj_solid);
@@ -358,9 +359,11 @@ else {
 arc=arc_of_sight(x,y,direction,200,160,obj_enemy,obj_solid);
 }
 if arc=noone {
+    if place_meeting(x,y,obj_solid) {
+                move_outside_solid(direction,speed);
+            }
         if attack=true {
-            if path_position=1 || !path_exists(attackpath) {
-            pos1=path_get_nearest_point(grouppath,x,y,global.grid);
+            pos1=path_get_closest_point(x,y,grouppath,obj_solid,global.grid);
             x1=path_get_point_x(grouppath,pos1);
             y1=path_get_point_y(grouppath,pos1);
             if path_exists(attackpath) {
@@ -380,7 +383,6 @@ if arc=noone {
             attack=false;
             }
         }
-    }
 }
             
     
@@ -405,14 +407,12 @@ if arc=noone {
     }
     else { 
     mp_grid_clear_all(grid);
-     var near1, near2;
+    mp_grid_add_instances(grid,obj_solid,1);
+     var near1, near2, near3;
      near1=instance_nth_nearest(x,y,obj_armyleader,2);
-     near2=instance_nth_nearest(x,y,obj_armyleader,3);
      mp_grid_add_instances(grid,near1,1);
-     mp_grid_add_instances(grid,near2,1);
-     mp_grid_add_instances(grid,obj_solid,1);
      mp_grid_add_instances(grid,obj_wall,1);
-    if !collision_circle(x,y,20,obj_enemy,0,0) &amp;&amp; !collision_circle(xxx,yyy,10,obj_armyleader,false,true) {
+    if !collision_circle(x,y,20,obj_enemy,1,1)  {
     if !path_exists(attackpath) {
         attackpath=path_add();
     }
@@ -422,11 +422,7 @@ if arc=noone {
         image_speed=1;
         rot=true;
         }
-        else {
-            path_end();
-        }
-  }
-     
+}
   
 }
 
@@ -632,6 +628,95 @@ global.moveselected=0;
         </arguments>
       </action>
     </event>
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Move around wall
+if path_exists(grouppath) {
+    if attack=false {
+        path_end();
+        if !mp_grid_path(global.grid,grouppath,x,y,dx,dy,true) //Checks to see if the new path is possible...
+        {
+    //Now we are going to draw an imaginary line
+    //between each of the points on the path and see
+    //if the line collides with a wall object. If it does
+    //the we remove the wall from the room and the mp_grid
+    //then go back and re-calculate the path...
+    var num,p,x1,y1,x2,y2,i,inst; //Temp variables...
+    num=path_get_number(grouppath); //Get the number of points on the path...
+    for (i=1; i&lt;num; i+=1;) //this is to loop through the points...
+        {
+        x1=path_get_point_x(grouppath,i-1); //Get the x/y coords of two points...
+        y1=path_get_point_y(grouppath,i-1);
+        x2=path_get_point_x(grouppath,i);
+        y2=path_get_point_y(grouppath,i);
+        inst=collision_line(x1,y1,x2,y2,obj_wall,true,true); //Check for a collision with parent object...
+        if inst!=noone
+            {
+            with (inst) //Destroy the colliding wall and remove it from the grid...
+                {
+                //You will need to change this to suit the size of the grid you use!!!!
+                mp_grid_clear_rectangle(global.grid, x-sprite_xoffset, y-sprite_yoffset, x+sprite_xoffset, y+sprite_yoffset); //Clears the AI grid before destroying itself...
+                instance_destroy();
+                }
+            show_message("You are blocking your minions"); //Tells us not to place a wall...
+            event_user(0); //re-run the event again to re-calculate the new path...
+            break;
+            }
+        }
+    }
+    else
+    {
+    mp_grid_path(global.grid,grouppath,x,y,dx,dy,true); //Assigns the new path...
+    path_set_kind(grouppath,1); //Sets the path to allow diagonals...
+    path_set_precision(grouppath,8); //Sets the path to curve...
+    }
+}
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="7">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if h=0 { 
+    instance_destroy();
+    }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
@@ -655,14 +740,14 @@ if (selected==true) { //if minion is selected
     if view_current==2 {    //only on commmanders view
             draw_sprite_ext(sprite_index,image_index,x,y,image_xscale, image_yscale, image_angle,c_red,1);
         }
+              else {
+            draw_self();
+        }
     }
 else {
 draw_self();
 }
 
-             
-
-            
 </string>
           </argument>
         </arguments>

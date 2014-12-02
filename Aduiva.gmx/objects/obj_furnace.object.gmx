@@ -89,7 +89,7 @@ if global.ignite=true {
         if done=true break;
     }
 }
-alarm[1]=28;
+alarm[1]=590;
 }
         
 </string>
@@ -123,7 +123,7 @@ if global.ignite=true {
             break;
             }
         }
-        alarm[0]=300;
+        alarm[0]=600;
     }
 }
 
